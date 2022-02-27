@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-# Hourglass problem
-
 def getSubArray(arr, startX, startY):
-    # Compute the sub array from given
-    # starting coordinates
     subArray = [[0,0,0],[0,0,0],[0,0,0]]
     for y in range(startY, startY + 3):
             for x in range(startX, startX + 3):
@@ -24,11 +20,11 @@ def hourglassSumForSubarray(arr):
     return sum
 
 def hourglassSum(arr):
-    # Compute the maximum hour glass sum
-    # from a 6x6 array
+    WIDTH = 6
+    HEIGHT = 6
 
     subArrays = []
-    # Try to get a list of all the 3x3 arrays
+    # Get a list of all the arrays
     # that form the hourglasses
     startX = 0
     startY = 0
@@ -40,15 +36,18 @@ def hourglassSum(arr):
             startY += 1
         startX += 1
 
-    print(subArrays)
-
-    maxHourGlassSum = 0
+    maxHourGlassSum = None
     for subArray in subArrays:
         hourGlassResult = hourglassSumForSubarray(subArray)
+        print("Subarray = {}".format(str(subArray)))
+        print("Result = {}".format(hourGlassResult))
+        if(not maxHourGlassSum and not maxHourGlassSum == 0):
+            maxHourGlassSum = hourGlassResult
+
         if(hourGlassResult > maxHourGlassSum):
             maxHourGlassSum = hourGlassResult
 
-    print(maxHourGlassSum)
+    return maxHourGlassSum
 
 
 
@@ -56,4 +55,21 @@ def hourglassSum(arr):
 arr = [[1,1,1,0,0,0], [0,1,0,0,0,0], [1,1,1,0,0,0],
        [0,0,2,4,4,0], [0,0,0,2,0,0], [0,0,1,2,4,0]]
 
-hourglassSum(arr)
+
+arr =   [[-1, -1,  0, -9, -2, -2],
+        [-2, -1, -6, -8, -2, -5],
+        [-1, -1, -1, -2, -3, -4],
+        [-1, -9, -2, -4, -4, -5],
+        [-7, -3, -3, -2, -9, -9],
+        [-1, -3, -1, -2, -4, -5]]
+
+arr =  [[-1, 1, -1, 0, 0, 0],
+        [0, -1,  0, 0, 0, 0],
+        [-1, -1, -1, 0, 0, 0],
+        [0, -9, 2, -4, -4, 0],
+        [-7, 0, 0, -2, 0, 0],
+        [0, 0, -1, -2, -4, 0]]
+
+
+maxHourGlassSum = hourglassSum(arr)
+print(maxHourGlassSum)
