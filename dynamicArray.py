@@ -15,6 +15,12 @@ import sys
 #  2. 2D_INTEGER_ARRAY queries
 #
 
+# To run in terminal, execute:
+#
+# export OUTPUT_PATH='/home/lachlan/Desktop/Git/LeetCode/output'
+#
+#
+
 # Constants
 # 
 # Query constants
@@ -26,8 +32,17 @@ QUERY_TYPE_INDEX = 0
 X_INDEX = 1
 Y_INDEX = 2
 
+lastAnswers = [0]
 
-def xor(x, y):
+def getLastAnswer():
+    print("Last answer = {}".format(lastAnswers[len(lastAnswers)-1]))
+    return lastAnswers[len(lastAnswers)-1]
+
+def setLatestAnswer(latestAnswer):
+    print("Appending last answer = {}".format(latestAnswer))
+    lastAnswers.append(latestAnswer)
+
+def binary_print(x, y):
     print('{0:08b}'.format(x))
     print('{0:08b}'.format(y))
 
@@ -37,26 +52,36 @@ def dynamicArray(n, queries):
     for index in range(n):
         arr.append([])
     
-    lastAnswer = 0
-    print(arr)
-    x = queries[X_INDEX]
-    y = queries[Y_INDEX]
+    for qindex, query in enumerate(queries):
+        print(arr)
+        x = queries[qindex][X_INDEX]
+        y = queries[qindex][Y_INDEX]
 
-    xor(x, y)
-    if(queries[QUERY_TYPE_INDEX] == FIRST_QUERY_INT):
-        # Execute first query algorithm
-        pass
-    elif(queries[QUERY_TYPE_INDEX] == SECOND_QUERY_INT):
-        # Execute second query algorithm
-        pass
-    else:
-        pass
+        print("x = {}".format(x))
+        print("y = {}".format(y))
+
+        idx = ((x ^ getLastAnswer()) % n)
+        print("idx = {}".format(idx))
+
+        if(queries[qindex][QUERY_TYPE_INDEX] == FIRST_QUERY_INT):
+            print("Query type = 1")
+            # Execute first query algorithm
+            arr[idx].append(y)
+        elif(queries[qindex][QUERY_TYPE_INDEX] == SECOND_QUERY_INT):
+            # Execute second query algorithm
+            print("Query type = 2")
+            arrIndex = y % len(arr[idx])
+            setLatestAnswer(arr[idx][arrIndex])
+        else:
+            pass
     
-
-dynamicArray(10, [1, 3, 5])
-exit()
-
-
+    returnArr = []
+    for queryAnswer in arr[::-1]: # Reverse
+        if(len(queryAnswer) == 0):
+            continue
+        returnArr.append(queryAnswer[len(queryAnswer)-1])
+    return returnArr
+        
 
 def main():
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
