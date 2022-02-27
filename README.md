@@ -1,2 +1,2 @@
-# MiscellaneousProblems
-Solutions to miscellaneous problems
+# LeetCode
+Solutions to various LeetCode problems
