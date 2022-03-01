@@ -22,7 +22,7 @@ import sys
 #
 
 # Constants
-# 
+#
 # Query constants
 FIRST_QUERY_INT = 1
 SECOND_QUERY_INT = 2
@@ -32,56 +32,44 @@ QUERY_TYPE_INDEX = 0
 X_INDEX = 1
 Y_INDEX = 2
 
-lastAnswers = [0]
-
-def getLastAnswer():
-    print("Last answer = {}".format(lastAnswers[len(lastAnswers)-1]))
-    return lastAnswers[len(lastAnswers)-1]
-
-def setLatestAnswer(latestAnswer):
-    print("Appending last answer = {}".format(latestAnswer))
-    lastAnswers.append(latestAnswer)
-
-def binary_print(x, y):
-    print('{0:08b}'.format(x))
-    print('{0:08b}'.format(y))
+DEBUG = False
 
 def dynamicArray(n, queries):
+    global lastAnswer
+    lastAnswer = 0
+
+    global answerArray
+    answerArray = []
+
     # Construct the 2D array
     arr = []
     for index in range(n):
         arr.append([])
-    
+
     for qindex, query in enumerate(queries):
-        print(arr)
+        if(DEBUG): print(arr)
         x = queries[qindex][X_INDEX]
         y = queries[qindex][Y_INDEX]
 
-        print("x = {}".format(x))
-        print("y = {}".format(y))
+        if(DEBUG):
+            print("x = {}".format(x))
+            print("y = {}".format(y))
 
-        idx = ((x ^ getLastAnswer()) % n)
-        print("idx = {}".format(idx))
+        idx = ((x ^ lastAnswer) % n)
+        if(DEBUG): print("idx = {}".format(idx))
 
         if(queries[qindex][QUERY_TYPE_INDEX] == FIRST_QUERY_INT):
-            print("Query type = 1")
+            if(DEBUG): print("Query type = 1")
             # Execute first query algorithm
             arr[idx].append(y)
         elif(queries[qindex][QUERY_TYPE_INDEX] == SECOND_QUERY_INT):
             # Execute second query algorithm
-            print("Query type = 2")
+            if(DEBUG): print("Query type = 2")
             arrIndex = y % len(arr[idx])
-            setLatestAnswer(arr[idx][arrIndex])
-        else:
-            pass
-    
-    returnArr = []
-    for queryAnswer in arr[::-1]: # Reverse
-        if(len(queryAnswer) == 0):
-            continue
-        returnArr.append(queryAnswer[len(queryAnswer)-1])
-    return returnArr
-        
+            lastAnswer = arr[idx][arrIndex]
+            answerArray.append(lastAnswer)
+
+    return answerArray
 
 def main():
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
