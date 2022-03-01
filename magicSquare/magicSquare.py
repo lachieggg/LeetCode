@@ -60,18 +60,14 @@ def formingMagicSquare(s):
     for y in totals:
         occurrences[y] = totals.count(y)
 
-
-
-if __name__ == '__main__':
+def main():
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
-
     s = []
-
     for _ in range(3):
         s.append(list(map(int, input().rstrip().split())))
-
     result = formingMagicSquare(s)
-
     fptr.write(str(result) + '\n')
-
     fptr.close()
+
+if __name__ == '__main__':
+    main()
