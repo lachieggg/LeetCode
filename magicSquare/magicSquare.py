@@ -30,6 +30,18 @@ import sys
 #
 
 EMPTY_MATRIX = [[0,0,0],[0,0,0],[0,0,0]]
+ROW = 'R'
+COLUMN = 'C'
+DIAGONAL = 'D'
+
+# Count the number of occurrences
+# of a value in a dictionary
+def count(dict, value):
+    total = 0
+    for v in list(dict.values()):
+        if(v == value):
+            total += 1
+    return total
 
 def transverse(matrix):
     newMatrix = EMPTY_MATRIX
@@ -39,26 +51,57 @@ def transverse(matrix):
     return newMatrix
 
 def formingMagicSquare(s):
-    totals = []
-    # Row totals
-    for row in s:
-        totals.append(sum(row))
+    coords = getSquareCoordsSet(s)           # Map of coordinates onto sets
+    sets = coords.values()                   # List of sets
+    sums = getSetSums(sets)                  # Map of sets onto sum totals
+    occurrences = getOccurrencesOfSums(sums) # Map of sums onto occurrences of those sums
 
-    # Column totals
-    for column in transverse(s):
-        totals.append(sum(column))
+    print(coords)
+    print(sets)
+    print(sums)
+    print(occurrences)
 
-    # Diagonal totals
+    
+def getOccurrencesOfSums(sums):
+    occurrences = {}
+    for _sum in sums.values():
+        if(not occurrences.get(_sum)): 
+            occurrences[_sum] = 1
+            continue
+        occurrences[_sum] += 1
+
+    return occurrences
+
+def getSetSums(sets):
+    sums = {}
+    for _set in sets:
+        sums[tuple(_set)] = sum(_set)
+
+    return sums
+    
+
+def getSquareCoordsSet(s):
+    coords = {}
+    for index, row in enumerate(s):
+        key = ((0, index), (1, index), (2, index))
+        coords[key] = row
+
+    for index, column in enumerate(transverse(s)):
+        key = ((index, 0), (index, 1), (index, 2))
+        coords[key] = column
+
     diagonalOne = [s[0][0], s[1][1], s[2][2]]
     diagonalTwo = [s[0][2], s[1][1], s[2][0]]
 
-    totals.append(sum(diagonalOne))
-    totals.append(sum(diagonalTwo))
+    key = ((0, 0), (1, 1), (2,2))
+    coords[key] = diagonalOne
 
-    # Occurrences
-    occurrences = {}
-    for y in totals:
-        occurrences[y] = totals.count(y)
+    key = ((2,2), (1,1), (0,0))
+    coords[key] = diagonalTwo
+
+    return coords
+
+
 
 def main():
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
