@@ -30,5 +30,5 @@ class Solution(object):
 
 
 s = Solution()
-s.initialize(45)
-print(s.climbStairs(45))
+s.initialize(600)
+print(s.climbStairs(600))
