@@ -30,6 +30,10 @@ int maxProfit(int* prices, int pricesSize) {
             // Must reset the best sell once a new best buy is established
             // because otherwise we would be trying to sell a stock in the past
             // (sell date would be before the buy date)
+            // 
+            // If the previous max gain (profit) before this context switch
+            // is still the largest that is retained
+            //
             bestSell = prices[index];
             // New best buy price
             bestBuy = prices[index];
