@@ -27,7 +27,7 @@ class Solution:
 
     def isSymmetric(self, tree):
         """
-        Determine whether a binary tree, expressed as an array, is symmetric
+        Determine whether a binary tree is symmetric
         """
         treeArray = self.convertTreeToArray(tree)
         n = 1
