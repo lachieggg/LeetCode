@@ -23,7 +23,6 @@ class Vertex:
 def explore(vertex, visited, node_count):
 	node_count -= 1;
 	len_out = len(vertex.Out)
-	#print("Vertex out {}".format(vertex.Out))
 	visited[vertex.Id] = 1
 
 	if(node_count == 0):
