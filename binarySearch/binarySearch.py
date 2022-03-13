@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
 DOES_NOT_EXIST = -1
+DEBUG = False
 
 class Solution:
     def search(self, nums, target):
-        #print("Nums {}".format(nums))
+        if(DEBUG): print("Nums {}".format(nums))
         if(len(nums) == 1):
             if(nums[0] == target):
                 return 0
@@ -15,11 +16,11 @@ class Solution:
         arrayOne = nums[0:middle]
         arrayTwo = nums[middle:]
 
-        #print(arrayOne)
-        #print(arrayTwo)
+        if(DEBUG): print(arrayOne)
+        if(DEBUG): print(arrayTwo)
 
         if(target >= nums[middle]):
-            #print("Target {} is greater than {}".format(target, nums[middle]))
+            if(DEBUG): print("Target {} is greater than {}".format(target, nums[middle]))
             result = self.search(arrayTwo, target)
             if(result == DOES_NOT_EXIST):
                 return DOES_NOT_EXIST
