@@ -44,7 +44,7 @@ def partition(A, lo, hi):
 	"""
 	Partition algorithm
 	"""
-	pivot = A[floor((hi + lo) /2)]
+	pivot = A[floor((hi + lo) / 2)]
 	i = lo - 1
 	j = hi + 1
 
