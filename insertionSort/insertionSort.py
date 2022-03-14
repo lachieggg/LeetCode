@@ -3,7 +3,7 @@
 import random
 from time import sleep
 
-LENGTH = 8
+LENGTH = 2**12
 MAX_VALUE = 100
 
 def swap(arr, i, j):
