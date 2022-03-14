@@ -2,12 +2,12 @@
 
 import random
 from time import sleep
-from math import floor 
+from math import floor
 
 LENGTH = 16
 MAX_VALUE = 100
 TIME_DELTA = 0.0125
-VISUALIZE = True
+VISUALIZE = False
 
 def swap(arr, i, j):
 	temp = arr[i]

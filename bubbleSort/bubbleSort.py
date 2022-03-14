@@ -5,6 +5,7 @@ from time import sleep
 
 LENGTH = 8
 MAX_VALUE = 100
+VISUALIZE = False
 
 def swap(arr, i, j):
 	temp = arr[i]
@@ -29,7 +30,7 @@ def visualize(arr):
 
 def bubbleSort(arr):
 	for j in range(len(arr)):
-		visualize(arr)
+		if(VISUALIZE): visualize(arr)
 		for i in range(1, len(arr)):
 			if(arr[i-1] > arr[i]):
 				arr = swap(arr, i, i-1)		
