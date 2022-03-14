@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <string.h>
 
-#define LENGTH 32
+#define LENGTH 33
 #define MAX_NUMBER_VALUE 10
 
 int cmp(int x1, int x2);
@@ -100,17 +100,23 @@ int *generate_random_array(int *A, int length) {
 // Recursive merge sort
 int *mergeSort(int *A, int length) {
 	if(length > 1) {
+		int lengthA = length/2;
+		int lengthB = length/2;
+
+		if(length % 2 != 0) {
+			lengthB = lengthA + 1;
+		}
+
 		int *B;
-		B = A+(length/2);
+		B = A+(lengthA);
 
-		print_array(A, length/2);
-		print_array(B, length/2);
+		print_array(A, lengthA);
+		print_array(B, lengthB);
 
-		A = mergeSort(A, length/2);
-		B = mergeSort(B, length/2); // assume n is even
+		A = mergeSort(A, lengthA);
+		B = mergeSort(B, lengthB); 
 
-		//int *M = (int*)malloc(length*sizeof(int));
-		return merge(A, B, length/2, length/2);
+		return merge(A, B, lengthA, lengthB);
 	} else {
 		return A;
 	}
