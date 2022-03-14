@@ -17,7 +17,6 @@ def visualize(arr):
 	Visualize an array of values
 	"""
 	for x in arr:
-		sleep(0.05)
 		print(x, end=' ')
 		# Spacing for single value characters
 		if(len(str(x)) == 1): print(' ', end='')
@@ -33,44 +32,30 @@ def insert(A, elem, index):
 		B.append(x)
 	return B
 
-def old():
-	for j,curr in enumerate(sorted):
-		print("Curr = {}".format(curr))
-		# Between
-		if(x >= prev and x <= curr):
-			print("Found")
-			sorted = sorted.insert(j, x)
-			print(sorted)
-			continue
-		#if(x > sorted[]):
-
-		prev = curr
-
-
-
-def insertionSort(A):
-	print(A)
-	first = A[0]
+def insertionSort(L):
+	print(L)
+	first = L[0]
 	sorted = [first]
 
-	for i,x in enumerate(A[1:]):
-		print("x = {}".format(x))
-		print("Sorted = {}".format(sorted))
+	for x in L[1:]:	
+		print(sorted)
+
+		# Start position
+		index = 0
+		if(x < sorted[0]):
+			sorted.insert(0, x)
+			continue
 	
+		# End position
+		index = len(sorted)
+		if(x > sorted[index-1] and index > 0):
+			sorted.insert(index, x)
+			continue
+		
+		# Middle position(s)
 		j = 0
 		while(j <= len(sorted)):
 			prev = sorted[j-1]
-
-			# Start position
-			if(j == 0):
-				if(x < sorted[j]):
-					sorted.insert(j, x)
-					break
-
-			if(j == len(sorted)):
-				sorted.insert(j, x)
-				break
-
 			curr = sorted[j]
 
 			if(x >= prev and x <= curr):
