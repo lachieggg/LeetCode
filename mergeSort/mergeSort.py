@@ -2,24 +2,24 @@
 
 from math import floor
 
-def merge(arr1, arr2):
-	if(len(arr1) == 0):
-		return arr2
-	if(len(arr2) == 0):
-		return arr1
+def merge(A, B):
+	if(len(A) == 0):
+		return B
+	if(len(B) == 0):
+		return A
 
-	if(arr1[0] <= arr2[0]):
-		return [arr1[0]] + merge(arr1[1:], arr2)
+	if(A[0] <= B[0]):
+		return [A[0]] + merge(A[1:], B)
 	else:
-		return [arr2[0]] + merge(arr1, arr2[1:])
+		return [A[0]] + merge(A, B[1:])
 
 def mergeSort(arr):
 	print("Input array {}".format(arr))
 	if(len(arr) > 1):
 		n = len(arr)
-		arr1 = arr[0:floor(n/2)]
-		arr2 = arr[floor(n/2):n]
-		return merge(mergeSort(arr1), mergeSort(arr2))
+		A = arr[0:floor(n/2)]
+		B = arr[floor(n/2):n]
+		return merge(mergeSort(A), mergeSort(B))
 	else:
 		return arr
 

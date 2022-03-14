@@ -1,17 +1,24 @@
 #include <stdio.h>
-#include <cstdlib>
+#include <stdlib.h>
 #include <time.h>
+#include <assert.h>
+#include <string.h>
 
-#define LENGTH 16
+#define LENGTH 32
 #define MAX_NUMBER_VALUE 10
 
 int cmp(int x1, int x2);
-int *merge(int A[], int B[], int n);
-int *mergeSort(int A[],  int n) ;
-void print_array(int A[], int length);
+void print_array(int *A, int length);
+int *mergeSort(int *A,  int n) ;
+int *merge(int *A, int *B, int lengthA, int lengthB);
 
 // Print out an array
 void print_array(int A[], int length) {
+	if(length == 0) {
+		printf("\n");
+		return;
+	}
+
 	int i;
 	printf("[");
 	for(i=0; i<length-1; i++) {
@@ -41,34 +48,28 @@ int *copyArray(int X[], int Y[], int start, int end) {
 	return Y;
 }
 
-// Prepend X to A
-int *prepend(int X, int A[], int lengthA) {
-	int lengthP = lengthA + 1;
-	int *P = (int*)malloc((lengthA+1)*sizeof(int));
+// Prepend X to Y
+int *prepend(int X, int *Y, int lengthY) {
+	int lengthP = lengthY + 1;
+	int *P = (int*)malloc((lengthP)*sizeof(int));
 
 	// Add X to the start
 	P[0] = X;
 	// Add all subsequent numbers
 	int i;
-	for(i=0; i<lengthA; i++) {
-		P[i+1] = A[i];
+	for(i=0; i<lengthY; i++) {
+		P[i+1] = Y[i];
 	}
 
-	print_array(P, lengthP);
-
-	//free(A);
 	return P;
 }
 
 // Merge
-int *merge(int A[], int B[], int M[], int startA, int startB, int lengthA, int lengthB) {
-	printf("A: ");
+// Recursively prepend the lowest value from the 
+// start of both arrays
+int *merge(int *A, int *B, int lengthA, int lengthB) {
 	print_array(A, lengthA);
-	printf("B: ");
 	print_array(B, lengthB);
-	printf("M: ");
-	print_array(M, 2*LENGTH);
-	printf("\n\n");
 
 	if(lengthA == 0) {
 		return B;
@@ -78,19 +79,17 @@ int *merge(int A[], int B[], int M[], int startA, int startB, int lengthA, int l
 	}
 
 	if(A[0] <= B[0]) {
-		return prepend(A[0], merge(A, B, M, startA+1, startB, lengthA-1, lengthB), 2*LENGTH);
+		return prepend(A[0], merge(A+1, B, lengthA-1, lengthB), lengthA+lengthB-1);
+	
 	} else {
-		return prepend(B[0], merge(A, B, M, startA, startB+1, lengthA, lengthB-1), 2*LENGTH);
+		return prepend(B[0], merge(A, B+1, lengthA, lengthB-1), lengthA+lengthB-1);
 	}
-
-	return M;
 }
 
 // Generate an array of random integers
 int *generate_random_array(int *A, int length) {
-	int i;
-	int r;
-	for(i=0; i<LENGTH; i++) {
+	int i, r;
+	for(i=0; i<length; i++) {
 		r = rand() % 10;
 		A[i] = r;
 	}
@@ -98,33 +97,56 @@ int *generate_random_array(int *A, int length) {
 	return A;
 }
 
+// Recursive merge sort
+int *mergeSort(int *A, int length) {
+	if(length > 1) {
+		int *B;
+		B = A+(length/2);
+
+		print_array(A, length/2);
+		print_array(B, length/2);
+
+		A = mergeSort(A, length/2);
+		B = mergeSort(B, length/2); // assume n is even
+
+		//int *M = (int*)malloc(length*sizeof(int));
+		return merge(A, B, length/2, length/2);
+	} else {
+		return A;
+	}
+}
+
+// Seed the RNG
 void seed() {
 	time_t t;
 	srand((unsigned) time(&t));
 }
 
-int main(int argc, char **argv) {
-	int length = LENGTH;
-	int *A = (int*)malloc(length*sizeof(int));
+// Generate an empty array of particular length
+int *make_array(int length) {
+	int *A;
+	A = (int*)malloc(length*sizeof(int));
+	assert(A);
+	return A;
 
+}
+// Main
+int main(int argc, char **argv) {
+	int length;
+	int *A;
+
+	// Seed the RNG
 	seed();
 
+	length = LENGTH;
+	// Generate an empty array of particular length
+	A = make_array(length);
+	// Fill the array with random numbers
 	generate_random_array(A, length);
-
-	print_array(A, length);
+	// Sort the array and then print
+	print_array(mergeSort(A, length), length);
 
 	return 0;
 }
 
 
-int *mergeSort(int *A, int n) {
-	if(n > 1) {
-		int *B = A+(n/2)*sizeof(int);
-		mergeSort(A, n/2);
-		mergeSort(B, n/2); // assume n is even
-		int *M = (int*)malloc(n*sizeof(int));
-		return merge(A, B, M, 0, 0, n/2, n/2);
-	} else {
-		return A;
-	}
-}
