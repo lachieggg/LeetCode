@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
 from math import floor
+import random
+
+LENGTH = 33
+MAX_VALUE = 100
+CONSOLE_OUTPUT = False
 
 def merge(A, B):
 	if(len(A) == 0):
@@ -13,8 +18,15 @@ def merge(A, B):
 	else:
 		return [A[0]] + merge(A, B[1:])
 
+def initArray():
+	arr = [x for x in range(LENGTH)]
+	for i in range(LENGTH):
+		arr[i] = random.randint(0, MAX_VALUE)
+
+	return arr
+
 def mergeSort(arr):
-	print("Input array {}".format(arr))
+	if(CONSOLE_OUTPUT): print("Input array {}".format(arr))
 	if(len(arr) > 1):
 		n = len(arr)
 		A = arr[0:floor(n/2)]
@@ -24,7 +36,7 @@ def mergeSort(arr):
 		return arr
 
 def test():
-	arr = [3,6,1,4,7,1,6]
+	arr = initArray()
 	sorted = mergeSort(arr)
 	print(sorted)
 

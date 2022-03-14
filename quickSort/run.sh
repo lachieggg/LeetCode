@@ -1,3 +1,3 @@
 #!/bin/bash
 
-time python quicksort.py
+time python quickSort.py
