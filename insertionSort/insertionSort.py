@@ -3,8 +3,10 @@
 import random
 from time import sleep
 
-LENGTH = 2**10		# 1024
-MAX_VALUE = 2**6	# 64
+LENGTH = 2**15		# 32768
+MAX_VALUE = 2**5	# 32
+VISUALIZE = True
+TIME_DELTA = 0.02
 
 def swap(arr, i, j):
 	temp = arr[i]
@@ -16,10 +18,13 @@ def visualize(arr):
 	"""
 	Visualize an array of values
 	"""
+	if(not VISUALIZE):
+		return
 	for x in arr:
 		print(x, end=' ')
 		# Spacing for single value characters
 		if(len(str(x)) == 1): print(' ', end='')
+		sleep(TIME_DELTA)
 		for y in range(x):
 			print("|", end='')
 		print("\n")
@@ -38,7 +43,7 @@ def insertionSort(L):
 	sorted = [first]
 
 	for x in L[1:]:	
-		print(sorted)
+		visualize(sorted)
 
 		# Start position
 		index = 0
