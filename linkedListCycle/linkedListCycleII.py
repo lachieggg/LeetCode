@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Definition for singly-linked list.
 class ListNode:
@@ -7,17 +7,28 @@ class ListNode:
         self.next = None
 
 class Solution:
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
+    def detectCycle(self, head):
         nodes = []
         curr = head
         if(not curr):
-            return False
-
+            return
+        
         while(curr.next and curr.next not in nodes):
             nodes.append(curr)
             curr = curr.next
        
-        
         if(curr.next):
-            return True
-        return False
+            # There is a cycle
+            return nodes.index(curr.next)
+        
+        return
+
+
+s = Solution()
+h = ListNode(3)
+h.next = ListNode(2)
+h.next.next = ListNode(0)
+h.next.next.next = ListNode(-4)
+h.next.next.next = h.next
+
+print(s.detectCycle(h))
