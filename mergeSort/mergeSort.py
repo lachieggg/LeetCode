@@ -16,13 +16,14 @@ def merge(A, B):
 	if(A[0] <= B[0]):
 		return [A[0]] + merge(A[1:], B)
 	else:
-		return [A[0]] + merge(A, B[1:])
+		return [B[0]] + merge(A, B[1:])
 
 def initArray():
 	arr = [x for x in range(LENGTH)]
 	for i in range(LENGTH):
 		arr[i] = random.randint(0, MAX_VALUE)
 
+	print(arr)
 	return arr
 
 def mergeSort(arr):
