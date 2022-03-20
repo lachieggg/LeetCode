@@ -6,7 +6,7 @@ from time import sleep
 LENGTH = 2**15		# 32768
 MAX_VALUE = 2**5	# 32
 VISUALIZE = True
-TIME_DELTA = 0.02
+TIME_DELTA = 0.005
 
 def swap(arr, i, j):
 	temp = arr[i]

@@ -33,14 +33,12 @@ def mergeSort(arr):
 		A = arr[0:floor(n/2)]
 		B = arr[floor(n/2):n]
 		return merge(mergeSort(A), mergeSort(B))
-	else:
-		return arr
+	return arr
 
 def test():
 	arr = initArray()
 	sorted = mergeSort(arr)
 	print(sorted)
-
 
 if __name__ == "__main__":
 	test()
