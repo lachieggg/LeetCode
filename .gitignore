@@ -130,3 +130,6 @@ dmypy.json
 
 # C
 a.out
+
+# Swap
+*.py.swp

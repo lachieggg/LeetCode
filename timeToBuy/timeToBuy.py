@@ -26,7 +26,6 @@ class Solution:
                     currentMaxProfit = delta
         return currentMaxProfit
 
-    
     def removeAllZeros(self, prices):
         return list(filter(lambda x: x > 0, prices))
 
@@ -39,7 +38,6 @@ class Solution:
     def allFutureValuesAreLower(self, prices, current):
         if(max(prices) < current):
             return True
-    
 
 
 prices = [7,1,5,3,6,4]
