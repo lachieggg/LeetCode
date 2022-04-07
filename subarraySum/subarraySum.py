@@ -2,38 +2,31 @@
 
 class Solution:
     def subarraySum(self, nums, k):
-        _subArrays = self.subArrays(nums)
         instances = 0
-        for _array in _subArrays:
-            print(_array)
-            if(self.sumOfArray(_array) == k):
-                print("True")
-                instances += 1
-            else:
-                print("False")
-        
-        return instances
-        
-    def subArrays(self, nums):
-        _subArrays = []
         for startIndex in range(0, len(nums), 1):
             for endIndex in range(startIndex, len(nums), 1):
-                _subArrays.append(nums[startIndex: endIndex+1])
-            
-        
-        return _subArrays
-    
-    def sumOfArray(self, _array):
-        _sum = 0
-        for x in _array:
-            _sum += x
-        return _sum
-    
+                _array = nums[startIndex: endIndex+1]
+                if(sum(_array) == k):
+                    instances += 1
 
-nums = [1,2,3,4]
+        return instances
+ 
+
+f = open('input', 'r')
+lines = f.readlines()
+nums = eval(''.join(lines))
+
+# Idea:
+#
+# Use Dynamic Programming, we can work out the sum of a subset of 
+# a subarray first, and then use that to construct the sum faster
+#
+# I.e. work out the sum of a sub-sub-array and then find out what
+# the sum of a sub-array is 
+#
+#
 k = 6
 
 s = Solution()
-print(s.subArrays(nums))
 print(s.subarraySum(nums, k))
 
