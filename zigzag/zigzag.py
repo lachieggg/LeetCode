@@ -18,7 +18,6 @@ class Solution:
 				cols += 1 + self.numRows - 2
 				skip = self.numRows - 2
 
-		#print(cols)
 		return cols
 	
 	def convertSolutionRowsToString(self):
@@ -59,7 +58,6 @@ class Solution:
 		
 		if(numRows == 1):
 			self.rows = [x for x in s]
-			print(self.rows)
 			return
 		
 		if(numRows == 2):
