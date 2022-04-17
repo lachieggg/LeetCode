@@ -136,6 +136,8 @@ a.out
 
 # Output
 output.txt
+out*
 
 # Archives
 archived/
+
