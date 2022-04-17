@@ -2,7 +2,17 @@
 
 
 class Solution:
+    def optimize(self, nums):
+        # Remove all duplicates of a particular number
+        prevs = []
+        for num in nums:
+            if(num in prevs):
+                continue
+            prevs.append(num)
+        return prevs
+
     def threeSum(self, nums):
+        nums = self.optimize(nums)
         self.arr = nums
         output = {}
 
@@ -25,6 +35,10 @@ class Solution:
 
         return solutions
 
-arr = [3,0,-2,-1,1,2]
+arr = [3,0,-2,-1,1,2,2]
 s = Solution().threeSum(arr)
+print(s)
+
+
+s = Solution().optimize(arr)
 print(s)
