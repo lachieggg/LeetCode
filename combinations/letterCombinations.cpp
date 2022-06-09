@@ -31,6 +31,17 @@ public:
         print_mapping(mapping);
     }
 
+    void algorithm(std::vector<std::string>& v, int digit) {
+        // Take every string in vector
+        // Create 3 of them
+        //
+        // Then append the different characters to each of them
+        //
+        //
+        char characters[] = {'a', 'b', 'c'};
+        (void)characters;
+    }
+
     // Solution
     std::vector<std::string> letterCombinations(std::string digits) {
         std::vector<std::string> vect = std::vector<std::string>();
