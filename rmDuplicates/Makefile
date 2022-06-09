@@ -1,6 +1,6 @@
 CC = g++
 
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -std=c++14
 
 TARGET = rmDuplicates
 
@@ -10,6 +10,6 @@ $(TARGET): $(TARGET).cpp
 	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).cpp
 
 clean:
-	$(RM) $(TARGET)
+	$(RM) -rf $(TARGET) *.dSYM
 
 

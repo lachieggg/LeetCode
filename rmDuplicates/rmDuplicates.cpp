@@ -37,21 +37,27 @@ void print_vector(std::vector<int> v) {
     for(int k: v) {
         std::cout << k << ' ';
     }
+    std::cout << std::endl;
 }
 
-int main() {
-    Solution s = Solution();
-    std::vector r = std::vector<int>();
-    srand(time(NULL));
+std::vector<int> create_random_vector() {
+    std::vector<int> r = std::vector<int>();
 
     for(int j=0; j<LENGTH; j++) {
         r.push_back(rand() % 10);
     }
 
-    std::vector n = {0,0,1,1,1,2,2,3,3,4};
+    return r;
+}
+
+
+int main() {
+    srand(time(NULL));
+    
+    Solution s = Solution();
+    std::vector<int> r = create_random_vector();
 
     print_vector(r);
     s.removeDuplicates(r);
-    std::cout << std::endl;
     print_vector(r);
 }
