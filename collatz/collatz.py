@@ -2,11 +2,11 @@
 
 from sys import argv
 
-LOG = False
+LOGGING = False
 
 def collatz(n):
 	"""Test the collatz conjecture for some positive integer n"""
-	if(LOG): print(n)
+	if(LOGGING): print(n)
 	if n == 1:
 		print("Complete.")
 		return
@@ -20,7 +20,7 @@ def main():
 		n = int(input("Enter a number: "))
 	else:
 		n = int(argv[1])
-	if(LOG): print(n)
+	if(LOGGING): print(n)
 	collatz(n)
 
 if(__name__ == "__main__"):

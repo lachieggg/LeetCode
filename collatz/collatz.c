@@ -2,10 +2,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define LOG false
+#define LOGGING false
 
 bool collatz(int n) {
-	if(LOG) { printf("n = %d\n", n); }
+	if(LOGGING) { printf("n = %d\n", n); }
 
 	if(n == 1) {
 		printf("Complete.\n");
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 	}
 
 	int n = atoi(argv[1]);
-	if(LOG) {printf("%d", n); }
+	if(LOGGING) {printf("%d", n); }
 	collatz(n);
 	return 0;
 }
