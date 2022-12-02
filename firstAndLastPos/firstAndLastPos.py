@@ -23,6 +23,9 @@ class Solution:
                 delta = 1
                 sign = -1
 
+            if(nums[index] < target and nums[index+1] > target):
+                return -1
+
             index += delta*sign
             if(index > length - 1):
                 index = length - 1
@@ -36,7 +39,7 @@ class Solution:
             if(nums[index] == target and nums[index-1] != target):
                 return index
     
-    def findLastTarget(self, nums: list[int], target: int) -> list[int]:
+    def findLastTarget(self, nums: list[int], target: int) -> int:
         index = 0
         sign = +1
         delta = 1
@@ -53,6 +56,9 @@ class Solution:
             elif(nums[index] > target and sign > 0):
                 delta = 1
                 sign = -1
+            
+            if(nums[index] < target and nums[index+1] > target):
+                return -1
 
             index += delta*sign
             if(index > length - 1):
