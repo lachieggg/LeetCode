@@ -11,18 +11,69 @@ const REPLACE_ALL = -1
 // have already been checked
 var checked []string
 
+// contains
+func contains(arr []string, s string) bool {
+	for _, z := range arr {
+		if z == s {
+			return true
+		}
+	}
+	return false
+}
+
 // recurse
+// tries to turn s2 into s1
+// by use of transformations
 func recurse(s1 string, s2 string) bool {
+
+	if s1 == s2 { 
+		return true
+	}
 	checked = append(checked, s2)
 
-	if(s1 == s2) { 
-		return true
+	// Generate the set of possible
+	// strings that can be created
+	// at only this step, using 
+	// transformations, and iteratively
+	// check whether any are a solution
+	var toCheck []string
+	for i, _ := range s1 {
+		for j, _ := range s1[0:i] {
+			fmt.Printf("swapping %d with %d  ", i, j)
+			n := swap(s2, i, j)
+			fmt.Println(n)
+			if n == s1 {
+				return true
+			}
+			toCheck = append(toCheck, n)
+		}
 	}
 
 	for i, _ := range s1 {
-		fmt.Println(i)
+		for j, _ := range s1[0:i] {
+			fmt.Printf("replacing %s with %s  ", string(s2[i]), string(s2[j]))
+			n := replace(s2, string(s2[i]), string(s2[j]))
+			fmt.Println(n)
+			if n == s1 {
+				return true
+			}
+			toCheck = append(toCheck, n)
+		}
 	}
 
+	// Check the child strings of
+	// each permutation at this step
+	for _, s := range toCheck {
+		//fmt.Println(s)
+		if contains(checked, s) {
+			fmt.Println("already checked")
+			continue
+		}
+		checked = append(checked, s)
+		if recurse(s1, s) {
+			return true
+		}
+	}
 
 	return false
 }
@@ -60,24 +111,11 @@ func replace(s string, s1 string, s2 string) string {
 
 // test
 func test() {
-	x := closeStrings("123", "1234")
+
+	a := "123456"
+	b := "653421"
+	x := closeStrings(a, b)
 	fmt.Println(x)
-
-	y := closeStrings("123", "123")
-	fmt.Println(y)
-
-	a := "1112"
-	b := "3332"
-	fmt.Println(b)
-
-	c := replace(a, "1", "2")
-
-	fmt.Println(c)
-
-	d := swap(a, 3, 1)
-	fmt.Println(d)
-
-	closeStrings(a, b)
 }
 
 // main
