@@ -3,40 +3,19 @@ package main
 import "fmt"
 import "strings"
 
-const NOT_FOUND =      -1
-const EMPTY         =  " "
-const OPENING_PAREN =  "("
-const CLOSING_PAREN =  ")"
-const OPENING_BRACE =  "{"
-const CLOSING_BRACE =  "}"
-const OPENING_SQ =     "["
-const CLOSING_SQ =     "]"
-
-
-var open = []string{OPENING_PAREN,
-	OPENING_BRACE, 
-	OPENING_SQ,
+var open = []string{
+	"(",
+	"{", 
+	"[",
 }
 
-var closed = []string{CLOSING_PAREN,
-	CLOSING_BRACE, 
-	CLOSING_SQ,
+var closed = []string{
+	")",
+	"}", 
+	"]",
 }
 
 var opening = make(map[string]string)
-
-func find(s string, l []string) int {
-	for i, c := range l {
-		if s == c {
-			return i
-		}
-	}
-	return 0
-}
-
-func isClosing(c string) bool {
-	return c == CLOSING_BRACE || c == CLOSING_PAREN || c == CLOSING_SQ
-}
 
 // delete the character
 // at i
@@ -62,20 +41,19 @@ func subcall(s string) bool {
 		return false
 	}
 
-	prev := EMPTY
+	prev := ""
 	i := 0
 	for _, e := range s {
-		if isClosing(string(e)) {
-			if prev != EMPTY {
-				if opening[string(e)] == prev {
-					// found opening brace
-					// directly followed by 
-					// corresponding closing brace
-					// remove
-					break
-				} else {
-					return false
-				}
+		c := string(e)
+		if c == "}" || c == ")" || c == "]" {
+			if opening[string(e)] == prev {
+				// found opening brace
+				// directly followed by 
+				// corresponding closing brace
+				// remove
+				break
+			} else {
+				return false
 			}
 		}
 		i += 1
@@ -111,5 +89,5 @@ func main() {
 	fmt.Println(isValid("{({})}"))  // true
 	fmt.Println(isValid("{{()}}"))  // true
 	fmt.Println(isValid("(("))      // false
-
+	fmt.Println(isValid("()[]{}"))  // true
 }
