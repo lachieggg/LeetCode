@@ -36,13 +36,35 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	return nil
 }
 
-func main() {
-	test()
+// Idea:
+// Merge two lists, then recursively merge that 
+// list with the remaining lists
+//
+
+func mergeKLists(lists []*ListNode) *ListNode {
+	if(lists == nil) {
+		return &ListNode{}
+	}
+
+	merged := mergeTwoLists(lists[0], lists[1])
+	if len(lists[2:]) == 0 {
+		return merged
+	} else {
+		// No pointer incrementing in Go!
+		var l []*ListNode
+		for _, z := range lists[2:] {
+			l = append(l, z)
+		}
+		return mergeKLists(append(l, merged))
+	}
 }
 
-func test() {
-	l1 := &ListNode{1, &ListNode{2, nil}}
+func main() {
+	l1 := &ListNode{1, &ListNode{9, nil}}
 	l2 := &ListNode{3, &ListNode{5, &ListNode{6, nil}}}
-	x := mergeTwoLists(l1, l2)
+	l3 := &ListNode{4, &ListNode{6, &ListNode{7, nil}}}
+	
+	lists := []*ListNode{l1, l2, l3}
+	x := mergeKLists(lists)
 	x.print()
 }
