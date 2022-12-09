@@ -10,6 +10,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
+// print out a linked list
 func (l *ListNode) print() {
 	for l != nil {
 		fmt.Println(l.Val)
@@ -20,11 +21,10 @@ func (l *ListNode) print() {
 // constructLinkedList
 // Takes O(n) time in the size of the list
 func constructLinkedList(lst []int) *ListNode {
-	l := &ListNode{}
+	l := &ListNode{lst[0], nil}
 	c := l
-	for _, v := range lst {
-		(*l).Val = v
-		(*l).Next = &ListNode{}
+	for _, v := range lst[1:] {
+		l.Next = &ListNode{v, nil}
 		l = l.Next
 	}
 	return c
@@ -36,16 +36,16 @@ func (l *ListNode) reverseLinkedList() *ListNode {
 	if l == nil {
 		return nil
 	}
-	lst := &ListNode{(*l).Val, nil}
-	current := l.Next
-	var start *ListNode
+	var lst *ListNode
+	current := l
 
 	for current != nil {
-		lst = &ListNode{(*current).Val, lst}
+		fmt.Println(current.Val)
+		lst = &ListNode{current.Val, lst}
 		current = current.Next
 	}
 	
-	start = lst
+	start := lst
 
 	return start
 }
@@ -58,7 +58,7 @@ func getIntersectionNode(headA *ListNode, headB *ListNode) *ListNode {
 	fmt.Println()
 	lstB.print()
 
-	for (*lstA).Val == (*lstB).Val {
+	for lstA.Val == lstB.Val {
 		lstA = lstA.Next
 	}
 
@@ -67,11 +67,16 @@ func getIntersectionNode(headA *ListNode, headB *ListNode) *ListNode {
 
 func main() {
 	x := [...]int{1,1,8,4,5}
+	fmt.Println(x)
+	fmt.Println(x[:])
 	// y := [...]int{2,6,1,8,4,5}
 	lx := constructLinkedList(x[:])
 	// ly := constructLinkedList(y[:])
+	lx.print()
+	fmt.Println("******")
 
 	m := lx.reverseLinkedList()
+	fmt.Println("******")
 	m.print()
 }
 
