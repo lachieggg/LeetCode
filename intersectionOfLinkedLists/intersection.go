@@ -40,7 +40,6 @@ func (l *ListNode) reverseLinkedList() *ListNode {
 	current := l
 
 	for current != nil {
-		fmt.Println(current.Val)
 		lst = &ListNode{current.Val, lst}
 		current = current.Next
 	}
@@ -54,30 +53,29 @@ func getIntersectionNode(headA *ListNode, headB *ListNode) *ListNode {
 	lstA := headA.reverseLinkedList()
 	lstB := headB.reverseLinkedList()
 
-	lstA.print()
-	fmt.Println()
-	lstB.print()
+	// var prev *ListNode
 
 	for lstA.Val == lstB.Val {
+		// prev = lstA
 		lstA = lstA.Next
+		headA = headA.Next
 	}
 
-	return lstA
+	return headA
 }
 
 func main() {
 	x := [...]int{1,1,8,4,5}
-	fmt.Println(x)
-	fmt.Println(x[:])
-	// y := [...]int{2,6,1,8,4,5}
-	lx := constructLinkedList(x[:])
-	// ly := constructLinkedList(y[:])
-	lx.print()
-	fmt.Println("******")
+	y := [...]int{2,3,4,1,8,4,5}
+	// 5 4 8 1 4 3 2 
+	// 5 4 8 1 1
 
-	m := lx.reverseLinkedList()
-	fmt.Println("******")
-	m.print()
+	lx := constructLinkedList(x[:])
+	ly := constructLinkedList(y[:])
+
+	fmt.Println("****")
+	z := getIntersectionNode(lx, ly)
+	z.print()
 }
 
 // We need to find the intersection of two linked lists
