@@ -77,37 +77,3 @@ func main() {
 	z := getIntersectionNode(lx, ly)
 	z.print()
 }
-
-// We need to find the intersection of two linked lists
-// That is, the node after which list A and list B are
-// exactly the same
-// 
-// This means that we need to keep track of
-// what previous nodes there are for each, since 
-// it is possible that for list A this occurs 
-// closer to the start of the list than for list B
-//
-// eg.
-//
-// A: 1 -> 2 -> 3 -> 4 -> 2
-// B  0 -> 1 -> 2 -> 3 -> 4 -> 2
-// 
-//
-// We should keep a pointer for both A and B
-// for where we are currently up to.
-//
-// These lists are not ordered.
-//
-// This can be modelled as a recursive problem.
-//
-// At each point we want to look back and see if 
-// the current node for A is in the previous nodes for
-// B and vice versa! 
-//
-// O(1) memory...
-//
-// Perhaps we can just keep the previous value in memory.
-// 
-// 
-//
-// 
