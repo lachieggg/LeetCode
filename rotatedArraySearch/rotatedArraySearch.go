@@ -1,21 +1,59 @@
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+const debug = false
+const notFound = -1
+
+// main
+func main() {
+	nums := []int{3, 4, 5, 6, 1, 2}
+	s := findOutOfOrder(nums)
+	fmt.Println(s)
+	// s := search(nums, 1)
+	// fmt.Printf("result %d", s)
+}
 
 // search
-func Search(nums []int, target int) int {
-	prev := nums[0]
-
-	if nums[0] > nums[-1] {
-		// rotated
-		rotationIndex := findOutOfOrder()
-		// split into two arrays and do
-		// bsearch on each
-
-		// return
-
-		return -1
+func search(nums []int, target int) int {
+	length := len(nums)
+	if length == 2 {
+		if nums[0] == target {
+			return 0
+		}
+		if nums[1] == target {
+			return 1
+		}
+		return notFound
 	}
 
-	bsearch(nums, target)
+	if nums[0] > nums[length-1] {
+		// rotated
+		rotationIndex := findOutOfOrder(nums)
+		fmt.Printf("rot at %d\n", rotationIndex)
+		if rotationIndex == -1 {
+			fmt.Println("err...")
+			return -1
+		}
+		arr := nums[0 : rotationIndex+1]
+		fnd := bsearch(arr, target)
+		if fnd != notFound {
+			return fnd
+		}
+		arr = nums[rotationIndex:]
+		fnd = bsearch(arr, target)
+		if fnd != notFound {
+			return fnd + rotationIndex
+		}
 
+		return notFound
+	}
+
+	found := bsearch(nums, target)
+	return found
 }
 
 // bsearch
@@ -52,11 +90,13 @@ func findOutOfOrder(nums []int) int {
 	var overshot bool = false
 	var velocity int = 1
 
-	if debug {
-		fmt.Printf("length = %d\n", length)
+	if nums[0] > nums[1] {
+		return 0
 	}
 
 	for {
+		fmt.Printf("index = %d\n", index)
+		fmt.Printf("velocity = %d\n", velocity)
 		velocity = direction * powInt(2, exponent)
 		index = index + velocity
 		if index > length-1 {
@@ -64,32 +104,27 @@ func findOutOfOrder(nums []int) int {
 				return -1
 			}
 			overshot = true
-			if debug {
-				fmt.Printf("past end of array %d\n", index)
-			}
+			fmt.Println("overshot")
 			index = length - 1
 			direction = -direction
-			exponent = 1
+			exponent = 0
 		}
 		if index < 0 {
 			if overshot {
 				return -1
 			}
 			overshot = true
-			if debug {
-				fmt.Printf("before beginning of array, %d\n", index)
-			}
+			fmt.Println("undershot")
 			index = 0
 			direction = -direction
-			exponent = 1
-		}
-		if debug {
-			fmt.Printf("index = %d\n", index)
+			exponent = 0
 		}
 		if nums[0] > nums[index] {
-			// overshot or found?
-			if nums[index-1] > nums[index] {
+			if index-1 >= 0 && nums[index-1] > nums[index] {
 				return index - 1 // found
+			}
+			if index+1 <= length-1 && nums[index] > nums[index+1] {
+				return index // found
 			}
 			// overshot, reset in opposite direction
 			direction = -direction
@@ -99,10 +134,14 @@ func findOutOfOrder(nums []int) int {
 			exponent += 1
 		}
 	}
-
 }
 
 // powInt
 func powInt(x, y int) int {
 	return int(math.Pow(float64(x), float64(y)))
+}
+
+// midpoint
+func midpoint(num float64) int {
+	return int(math.Floor(num / 2))
 }
