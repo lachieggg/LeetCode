@@ -5,16 +5,13 @@ import (
 	"math"
 )
 
-const debug = false
 const notFound = -1
 
 // main
 func main() {
 	nums := []int{4, 5, 6, 7, 1, 2, 3}
-	s := findOutOfOrder(nums)
+	s := search(nums, 1)
 	fmt.Println(s)
-	// s := search(nums, 1)
-	// fmt.Printf("result %d", s)
 }
 
 // search
@@ -33,11 +30,8 @@ func search(nums []int, target int) int {
 	if nums[0] > nums[length-1] {
 		// rotated
 		rotationIndex := findOutOfOrder(nums)
-		if debug {
-			fmt.Printf("rot at %d\n", rotationIndex)
-		}
-		if rotationIndex == -1 {
-			return -1
+		if rotationIndex == notFound {
+			return notFound
 		}
 		arr := nums[0 : rotationIndex+1]
 		fnd := bsearch(arr, target)
@@ -90,29 +84,12 @@ func findOutOfOrder(nums []int) int {
 	var direction int = 1
 	var velocity int = 1
 
-	if nums[0] > nums[1] {
-		return 0
-	}
-
 	for {
-		if debug {
-			fmt.Printf("position = %d\n", position)
-			fmt.Printf("velocity = %d\n", velocity)
-			fmt.Printf("direction = %d\n", direction)
-			fmt.Println("---")
-		}
-
 		if position > length-1 {
 			if overshot {
-				if debug {
-					fmt.Println("overshot")
-				}
-				return -1
+				return notFound
 			}
 			overshot = true
-			if debug {
-				fmt.Println("overshot")
-			}
 			position = length - 1
 			direction = -direction
 			velocity = 1
@@ -120,15 +97,9 @@ func findOutOfOrder(nums []int) int {
 		}
 		if position < 0 {
 			if overshot {
-				if debug {
-					fmt.Println("undershot")
-				}
-				return -1
+				return notFound
 			}
 			overshot = true
-			if debug {
-				fmt.Println("undershot")
-			}
 			position = 0
 			direction = -direction
 			velocity = 1
@@ -140,9 +111,6 @@ func findOutOfOrder(nums []int) int {
 				return position - 1 // found
 			}
 			// overshot, reset in opposite direction
-			if debug {
-				fmt.Println("went past number, go opposite direction")
-			}
 			direction = -1
 			velocity = 1
 		} else {
@@ -152,11 +120,6 @@ func findOutOfOrder(nums []int) int {
 		// update
 		position += velocity * direction
 	}
-}
-
-// powInt
-func powInt(x, y int) int {
-	return int(math.Pow(float64(x), float64(y)))
 }
 
 // midpoint
