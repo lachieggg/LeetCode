@@ -3,153 +3,191 @@ package main
 import (
 	"fmt"
 	"math"
+	"reflect"
 )
+
+// RunCase
+func RunCase(nums []int, target int, expected []int) {
+	fmt.Println(nums)
+	result := searchRange(nums, target)
+	if reflect.DeepEqual(result, expected) {
+		fmt.Println("Ok")
+	} else {
+		fmt.Printf("Fail: searchRange(%v, %d) = %v, expected %v\n", nums, target, result, expected)
+	}
+}
+
+// main
+func main() {
+	RunCase([]int{5, 7, 7, 8, 8, 10}, 7, []int{1, 2})
+	RunCase([]int{5, 7}, 7, []int{1, 1})
+	RunCase([]int{5, 7, 7, 8, 8, 10}, 8, []int{3, 4})
+	RunCase([]int{2, 2}, 2, []int{0, 1})
+	RunCase([]int{2, 2, 2}, 2, []int{0, 2})
+	RunCase([]int{1, 2, 2}, 2, []int{1, 2})
+	RunCase([]int{}, 2, []int{-1, -1})
+	RunCase([]int{1, 2, 3}, 2, []int{1, 1})
+	RunCase([]int{1, 1, 2, 4}, 2, []int{2, 2})
+	RunCase([]int{1, 1, 2}, 1, []int{0, 1})
+	RunCase([]int{1, 1, 2, 2}, 1, []int{0, 1})
+	RunCase([]int{1, 2, 3, 3, 3, 3, 4, 5, 9}, 3, []int{2, 5})
+	RunCase([]int{0, 0, 1, 1, 1, 2, 3, 4, 4, 5, 6, 7, 7, 7, 8, 8, 8, 8, 9, 9, 10}, 4, []int{7, 8})
+	RunCase([]int{1, 1, 1, 1, 2, 4, 4, 4, 5, 5, 7, 7, 7, 8, 8, 9, 9, 11, 11, 12, 12, 12, 12}, 5, []int{8, 9})
+	RunCase([]int{2, 2}, 5, []int{-1, -1})
+	RunCase([]int{0, 0, 1, 2, 3, 3, 4}, 2, []int{3, 3})
+}
 
 const notFound = -1
 
 // searchRange
 func searchRange(nums []int, target int) []int {
-	start := findStartEnd(nums, target, -1)
-	end := findStartEnd(nums, target, +1)
+	if len(nums) == 0 {
+		return []int{-1, -1}
+	}
+	fnd := bsearch(nums, target)
+	if fnd == notFound {
+		return []int{-1, -1}
+	}
+	start := findStart(nums, target)
+	end := findEnd(nums, target)
 	return []int{start, end}
 }
 
-// main
-func main() {
-	var nums []int = []int{5, 7, 7, 8, 8, 10}
-	s := searchRange(nums, 7)
-	fmt.Println(s)
-	nums = []int{5, 7}
-	s = searchRange(nums, 7)
-	fmt.Println(s)
-	nums = []int{5, 7, 7, 8, 8, 10}
-	s = searchRange(nums, 8)
-	fmt.Println(s)
-	nums = []int{2, 2}
-	s = searchRange(nums, 2)
-	fmt.Println(s)
-	nums = []int{2, 2, 2}
-	s = searchRange(nums, 2)
-	fmt.Println(s)
-	nums = []int{1, 2, 2}
-	s = searchRange(nums, 2)
-	fmt.Println(s)
-	nums = []int{}
-	s = searchRange(nums, 2)
-	fmt.Println(s)
-	nums = []int{1, 2, 3}
-	s = searchRange(nums, 2)
-	fmt.Println(s)
-	nums = []int{1, 1, 2, 4}
-	s = searchRange(nums, 2)
-	fmt.Println(s)
-	nums = []int{1, 1, 2}
-	s = searchRange(nums, 1)
-	fmt.Println(s)
-	nums = []int{1, 1, 2, 2}
-	s = searchRange(nums, 1)
-	fmt.Println(s)
-	nums = []int{1, 2, 3, 3, 3, 3, 4, 5, 9}
-	s = searchRange(nums, 3)
-	fmt.Println(s)
-}
-
-// findStartAndEnd finds the start or end index of the
-// occurrences of a particular number. Takes
-// an offset as an argument. Pass in -1 for beginning
-// or +1 for end
-func findStartEnd(nums []int, target int, offset int) int {
+// findStart
+func findStart(nums []int, target int) int {
 	var length int = len(nums)
-	var overshot bool = false
 	var position int
 	var direction int = 1
-	var velocity int = 0
 	var exponent int = 0
 
-	// Edge cases
-	if length == 0 {
-		return notFound
-	}
 	if length == 1 {
 		if nums[0] == target {
 			return 0
 		}
 		return notFound
 	}
-	if offset < 0 && nums[0] == target && nums[0] == nums[length-1] {
-		return 0
-	}
-	if offset > 0 && nums[0] == target && nums[0] == nums[length-1] {
-		return length - 1
-	}
-	if length > 2 && nums[1] == target && nums[0] != target && nums[2] != target {
-		return 1
-	}
 
 	for {
-		if position > length-1 {
-			if overshot {
-				return notFound
+		minusCheckable := position-1 >= 0
+		plusCheckable := position+1 <= length-1
+		currCheckable := position >= 0 && position <= length-1
+
+		if !currCheckable {
+			exponent = 0
+			if position < 0 {
+				position = 0
+				direction = 1
+			} else {
+				position = length - 1
+				direction = -1
 			}
-			overshot = true
-			position = length - 1
-			direction = -direction
-			velocity = 1
 			continue
 		}
-		if position < 0 {
-			if overshot {
-				return notFound
-			}
-			overshot = true
-			position = 0
-			direction = -direction
-			velocity = 1
-			continue
+
+		if plusCheckable && nums[position] < target && nums[position+1] > target {
+			return notFound
 		}
 
 		if nums[position] == target {
 			// found
-			plusCheckable := position+offset >= 0 && position+offset <= length-1
-			minusCheckable := position-offset >= 0 && position-offset <= length-1
-			bothCheckable := plusCheckable && minusCheckable
-
-			// either at the beginning or end of the array
-			if !bothCheckable {
-				// end of the array
-				if position == length-1 && offset > 0 {
-					return position
-				}
-				// start of the array
-				if position == 0 && offset < 0 {
-					return position
-				}
-			}
-			// only one element
-			if bothCheckable && nums[position+offset] != target && nums[position-offset] != target {
+			if minusCheckable && nums[position-1] != target {
+				// first one
+				return position
+			} else if !minusCheckable {
+				// start of array
 				return position
 			}
-			// end/start with multiple elements
-			if plusCheckable && nums[position+offset] != target {
-				return position
+			for position >= 0 && nums[position] == target {
+				position -= 1
 			}
-			// overshot, reset in opposite direction
-			direction = -1
-			position += direction
-			velocity = 0
-			exponent = 0
-			continue
+			return position + 1
 		} else if nums[position] < target {
-			// accelerate
 			direction = 1
-			velocity += power(2, exponent)
+			exponent = 0
 		} else if nums[position] > target {
-			// accelerate
 			direction = -1
-			velocity += power(2, exponent)
+			exponent = 0
 		}
-		// update
-		position += velocity * direction
+		if position == 0 {
+			position += 1
+			direction = 1
+			exponent = 0
+		} else if position == length-1 {
+			position -= 1
+			direction = -1
+			exponent = 0
+		} else {
+			position += power(2, exponent) * direction
+			exponent += 1
+		}
+	}
+}
+
+// findStart
+func findEnd(nums []int, target int) int {
+	var length int = len(nums)
+	var position int
+	var direction int = 1
+	var exponent int = 0
+
+	if length == 1 {
+		if nums[0] == target {
+			return 0
+		}
+		return notFound
+	}
+
+	for {
+		plusCheckable := position+1 <= length-1
+		currCheckable := position >= 0 && position <= length-1
+
+		if !currCheckable {
+			direction = -direction
+			exponent = 0
+			if position < 0 {
+				position = 0
+				direction = 1
+			} else {
+				position = length - 1
+				direction = -1
+			}
+			continue
+		}
+
+		if plusCheckable && nums[position] < target && nums[position+1] > target {
+			return notFound
+		}
+
+		if nums[position] == target {
+			// found
+			if plusCheckable && nums[position+1] != target {
+				// last one
+				return position
+			} else if !plusCheckable {
+				// end of array
+				return position
+			}
+			for position <= length-1 && nums[position] == target {
+				position += 1
+			}
+			return position - 1
+		} else if nums[position] < target {
+			direction = 1
+			exponent = 0
+		} else if nums[position] > target {
+			direction = -1
+			exponent = 0
+		}
+		if position == 0 {
+			position += 1
+			exponent = 0
+		} else if position == length-1 {
+			position -= 1
+			exponent = 0
+		} else {
+			position += power(2, exponent) * direction
+			exponent += 1
+		}
 	}
 }
 
@@ -157,4 +195,31 @@ func findStartEnd(nums []int, target int, offset int) int {
 func power(base, exponent int) int {
 	result := int(math.Pow(float64(base), float64(exponent)))
 	return result
+}
+
+// bsearch
+func bsearch(nums []int, target int) int {
+	length := len(nums)
+	if length == 1 {
+		if nums[0] == target {
+			return 0
+		}
+		return notFound
+	}
+	splitIndex := midpoint(float64(length))
+	fnd := bsearch(nums[0:splitIndex], target)
+	if fnd != notFound {
+		return fnd
+	}
+	fnd = bsearch(nums[splitIndex:], target)
+	if fnd != notFound {
+		return fnd + splitIndex
+	}
+
+	return notFound
+}
+
+// midpoint
+func midpoint(num float64) int {
+	return int(math.Floor(num / 2))
 }
