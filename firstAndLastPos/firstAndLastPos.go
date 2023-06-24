@@ -108,6 +108,7 @@ func findStart(nums []int, target int) int {
 			direction = -1
 			exponent = 0
 		}
+
 		if position == 0 {
 			position += 1
 			direction = 1
@@ -178,6 +179,7 @@ func findEnd(nums []int, target int) int {
 			direction = -1
 			exponent = 0
 		}
+
 		if position == 0 {
 			position += 1
 			exponent = 0
