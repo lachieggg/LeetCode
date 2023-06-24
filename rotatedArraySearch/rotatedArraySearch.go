@@ -10,7 +10,7 @@ const notFound = -1
 
 // main
 func main() {
-	nums := []int{3, 4, 5, 6, 1, 2}
+	nums := []int{4, 5, 6, 7, 1, 2, 3}
 	s := findOutOfOrder(nums)
 	fmt.Println(s)
 	// s := search(nums, 1)
@@ -33,9 +33,10 @@ func search(nums []int, target int) int {
 	if nums[0] > nums[length-1] {
 		// rotated
 		rotationIndex := findOutOfOrder(nums)
-		fmt.Printf("rot at %d\n", rotationIndex)
+		if debug {
+			fmt.Printf("rot at %d\n", rotationIndex)
+		}
 		if rotationIndex == -1 {
-			fmt.Println("err...")
 			return -1
 		}
 		arr := nums[0 : rotationIndex+1]
@@ -83,11 +84,10 @@ func bsearch(nums []int, target int) int {
 // Returns index of x, where x is left adjacent to y, and x > y
 // Returns -1 if no such pair exists.
 func findOutOfOrder(nums []int) int {
-	var index int
-	var direction int = 1
-	var exponent int = 1
 	var length int = len(nums)
 	var overshot bool = false
+	var position int
+	var direction int = 1
 	var velocity int = 1
 
 	if nums[0] > nums[1] {
@@ -95,44 +95,62 @@ func findOutOfOrder(nums []int) int {
 	}
 
 	for {
-		fmt.Printf("index = %d\n", index)
-		fmt.Printf("velocity = %d\n", velocity)
-		velocity = direction * powInt(2, exponent)
-		index = index + velocity
-		if index > length-1 {
+		if debug {
+			fmt.Printf("position = %d\n", position)
+			fmt.Printf("velocity = %d\n", velocity)
+			fmt.Printf("direction = %d\n", direction)
+			fmt.Println("---")
+		}
+
+		if position > length-1 {
 			if overshot {
+				if debug {
+					fmt.Println("overshot")
+				}
 				return -1
 			}
 			overshot = true
-			fmt.Println("overshot")
-			index = length - 1
+			if debug {
+				fmt.Println("overshot")
+			}
+			position = length - 1
 			direction = -direction
-			exponent = 0
+			velocity = 1
+			continue
 		}
-		if index < 0 {
+		if position < 0 {
 			if overshot {
+				if debug {
+					fmt.Println("undershot")
+				}
 				return -1
 			}
 			overshot = true
-			fmt.Println("undershot")
-			index = 0
-			direction = -direction
-			exponent = 0
-		}
-		if nums[0] > nums[index] {
-			if index-1 >= 0 && nums[index-1] > nums[index] {
-				return index - 1 // found
+			if debug {
+				fmt.Println("undershot")
 			}
-			if index+1 <= length-1 && nums[index] > nums[index+1] {
-				return index // found
+			position = 0
+			direction = -direction
+			velocity = 1
+			continue
+		}
+
+		if nums[0] > nums[position] {
+			if position-1 >= 0 && nums[position-1] > nums[position] {
+				return position - 1 // found
 			}
 			// overshot, reset in opposite direction
-			direction = -direction
-			exponent = 1
+			if debug {
+				fmt.Println("went past number, go opposite direction")
+			}
+			direction = -1
+			velocity = 1
 		} else {
 			// accelerate
-			exponent += 1
+			velocity *= 2
 		}
+		// update
+		position += velocity * direction
 	}
 }
 
