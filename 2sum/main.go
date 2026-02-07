@@ -52,87 +52,80 @@ func twoSumMirror(nums []int, target int) []int {
 
 // twoSumCut sorts the input and cuts the search space by looking at the
 // smallest and largest numbers.
-func twoSum(nums []int, target int) []int {
-	var orig []int
+func twoSumCut(nums []int, target int) []int {
+	// max index
 	max := len(nums)
-	var sorted = true
-    sort.Ints(nums)
+	ln := max
+	// sorted array
+	sorted := make([]int, max)
+	copy(sorted, nums)
+	sort.Ints(sorted)
 
-	if nums[0] >= 0 {
-		for i, num := range nums {
+	if sorted[0] >= 0 {
+		// all values are positive
+		for i, num := range sorted {
 			if num > target {
 				max = i
 			}
 		}
-		orig = clone(nums)
-	} else if nums[max-1] < 0 {
-		for i, num := range nums {
+	} else if sorted[max-1] < 0 {
+		// all values are negative
+		for i, num := range sorted {
 			if num < target {
 				max = i
 			}
 		}
-		orig = clone(nums)
-	} else {
-		sorted = false
 	}
 
-	fmt.Printf("nums: %v\n", nums)
-	fmt.Printf("max: %v\n", max)
+	// whether we trimmed the array (or not)
+	// the same as whether max has been altered
+	var trimmed = (max != ln)
 
 	var result []int
+	var i, j int
+	if trimmed {
+		i, j, result = findIndexes(max, sorted, target)
+	} else {
+		i, j, _ = findIndexes(max, nums, target)
+	}
+
+	if trimmed && result[0] != result[1] {
+		// trim occurred, so need to find the original indexes
+		return []int{
+			find(nums, result[0]),
+			find(nums, result[1])}
+	}
+
+	if trimmed && result[0] == result[1] {
+		// cut occurred, duplicate number
+		// find in reverse to prevent using the same index twice
+		return []int{
+			find(nums, result[0]),
+			findReverse(nums, result[1]),
+		}
+	}
+
+	return []int{i, j}
+}
+
+// findIndexes
+func findIndexes(max int, arr []int, target int) (int, int, []int) {
 	for i := 0; i < max-1; i++ {
 		for j := i + 1; j < max; j++ {
-			fmt.Printf("%d %d\n", i, j)
 			if i == j {
 				continue
 			}
-			if nums[i]+nums[j] == target && sorted {
+			if arr[i]+arr[j] == target {
 				// return the numbers, lookup indexes afterward
-				result = []int{nums[i], nums[j]}
-				break
-			}
-			if nums[i]+nums[j] == target && !sorted {
-				// return the indexes, done
-				result = []int{i, j}
-				break
+				// if needed
+				return i, j, []int{arr[i], arr[j]}
 			}
 		}
 	}
-
-	if result[0] != result[1] && !sorted {
-		// indexes preserved, done
-		return result
-	}
-
-	if result[0] != result[1] && sorted {
-		// need to find the original indexes
-		return []int{
-			find(orig, result[0]),
-			find(orig, result[1])}
-	}
-
-	if result[0] == result[1] && sorted {
-		// same number, sorted list
-		// find in reverse to prevent using the same index twice
-		return []int{
-			find(orig, result[0]),
-			findReverse(orig, result[0]),
-		}
-	}
-
-	if result[0] == result[1] && !sorted {
-		return []int{result[0], result[1]}
-	}
-
-	return []int{}
+	return -1, -1, []int{}
 }
 
-func clone(arr []int) []int {
-	x := make([]int, len(arr))
-	copy(x, arr)
-	return x
-}
-
+// find returns the index of the target in arr, if it exists
 func find(arr []int, target int) int {
 	for i, v := range arr {
 		if v == target {
@@ -154,11 +147,68 @@ func findReverse(arr []int, target int) int {
 }
 
 func main() {
-	// fmt.Println(twoSum([]int{2, 7, 11, 15}, 9))        // [0 1]
-	// fmt.Println(twoSum([]int{3, 2, 4}, 6))             // [1 2]
-	// fmt.Println(twoSum([]int{3, 3}, 6))                // [0 1]
-	// fmt.Println(twoSum([]int{2, 5, 5, 11}, 10))        // [1 2]
-	// fmt.Println(twoSum([]int{-10, -1, -18, -19}, -19)) // [1 2]
-	// fmt.Println(twoSum([]int{0, 3, -3, 4, -1}, -1))    // [4 0]
-	fmt.Println(twoSum([]int{3, 2, 95, 4, -3}, 92)) // [2 4]
+	fmt.Println(twoSum([]int{2, 7, 11, 15}, 9))        // [0 1]
+	fmt.Println(twoSum([]int{3, 2, 4}, 6))             // [1 2]
+	fmt.Println(twoSum([]int{3, 3}, 6))                // [0 1]
+	fmt.Println(twoSum([]int{2, 5, 5, 11}, 10))        // [1 2]
+	fmt.Println(twoSum([]int{-10, -1, -18, -19}, -19)) // [1 2]
+	fmt.Println(twoSum([]int{0, 3, -3, 4, -1}, -1))    // [4 0]
+	fmt.Println(twoSum([]int{3, 2, 95, 4, -3}, 92))    // [2 4]
+	fmt.Println(twoSum([]int{3, 2, 4}, 6))             // [1 2]
+}
+
+func twoSum(nums []int, target int) []int {
+	m := MultiMap{}
+	m.FromArray(nums)
+
+	for k, indexes := range m {
+		if len(indexes) >= 2 && target == 2*k {
+			return indexes
+		}
+		for j, secondary := range m {
+			if j == k {
+				continue
+			}
+
+			if j+k == target {
+				return []int{indexes[0], secondary[0]}
+			}
+		}
+	}
+
+	return []int{}
+}
+
+type MultiMap map[int][]int
+
+func (m MultiMap) FromArray(arr []int) {
+	for i, v := range arr {
+		m[v] = append(m[v], i)
+	}
+}
+
+
+func (m MultiMap) Add(key, value int) {
+	m[key] = append(m[key], value)
+}
+
+func (m MultiMap) Pop(key int) (int, bool) {
+	values := m[key]
+	if len(values) == 0 {
+		return 0, false
+	}
+
+	last := values[len(values)-1]
+	m[key] = values[:len(values)-1]
+	return last, true
+}
+
+func (m MultiMap) Remove(key, value int) {
+	values := m[key]
+	for i, v := range values {
+		if v == value {
+			m[key] = append(values[:i], values[i+1:]...)
+			return
+		}
+	}
 }
