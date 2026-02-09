@@ -4,30 +4,47 @@ import (
 	"fmt"
 )
 
-const debug = false
+const (
+	debug = true
+)
 
-// generateMatrix optimised solution
-// O(n^2) time & space complexity
-func generateMatrix(n int) [][]int {
-	// starting pos
-	var x, y = 0, 0
+func main() {
+	matrix := [][]int{
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	}
 
-	// initial value
-	var k = 1
+	printMatrix(matrix)
+	print(spiralOrder(matrix)) // [1,2,3,6,9,8,7,4,5] 3×3
+
+	matrix = [][]int{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 10, 11, 12},
+	}
+
+	printMatrix(matrix)
+	print(spiralOrder(matrix)) // [1,2,3,4,8,12,11,10,9,5,6,7] 3×4
+}
+
+func spiralOrder(matrix [][]int) []int {
+	elems := []int{}
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return []int{}
+	}
+	m, n := len(matrix), len(matrix[0])
+	var x, y int
 
 	// bounds
-	var yStart, xStart, yEnd, xEnd = 0, 0, n - 1, n - 1
+	var yStart, xStart, yEnd, xEnd = 0, 0, m - 1, n - 1
 
 	// velocity
 	var horizontal, vertical = 1, 0
 
-	// create matrix
-	matrix := make([][]int, n)
-	for i := range matrix {
-		matrix[i] = make([]int, n)
-	}
+	for len(elems) < m*n {
+		elems = append(elems, matrix[y][x])
 
-	for k <= n*n {
 		if y == yStart && x == xEnd && horizontal == 1 {
 			// top right corner
 			yStart += 1
@@ -50,20 +67,15 @@ func generateMatrix(n int) [][]int {
 			vertical = 0
 		}
 
-		matrix[y][x] = k
-		x += horizontal
-		y += vertical
-		k += 1
+		moveCursor(&x, &y, horizontal, vertical)
 	}
-	return matrix
+
+	return elems
 }
 
-func main() {
-	var matrix [][]int
-	for i := range 25 {
-		matrix = generateMatrix(i)
-		printMatrix(matrix)
-	}
+func moveCursor(x *int, y *int, horizontal int, vertical int) {
+	*x = *x + horizontal
+	*y = *y + vertical
 }
 
 // printMatrix
@@ -117,8 +129,8 @@ func printMatrix(matrix [][]int) {
 	fmt.Println("┘")
 }
 
-func print(s string) {
+func print(s any) {
 	if debug {
-		fmt.Print(s)
+		fmt.Printf("%v\n", s)
 	}
 }
