@@ -4,7 +4,8 @@ import (
 	"fmt"
 )
 
-// generateMatrix
+// generateMatrix optimised solution
+// O(n^2) time & space complexity
 func generateMatrix(n int) [][]int {
 	// starting pos
 	var x, y = 0, 0
@@ -118,6 +119,6 @@ const debug = false
 
 func print(s string) {
 	if debug {
-		fmt.Printf(s)
+		fmt.Print(s)
 	}
 }
