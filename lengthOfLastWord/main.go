@@ -32,7 +32,7 @@ func lengthOfLastWord_(s string) int {
 
 // lengthOfLastWord
 // O(n) time, O(1) space
-// Sonnet 4.5 optimised solution
+// [Sonnet 4.5] optimised solution
 func lengthOfLastWord(s string) int {
 	length := 0
 	i := len(s) - 1

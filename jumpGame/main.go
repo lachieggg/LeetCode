@@ -62,6 +62,8 @@ func canJump(nums []int) bool {
 	return false
 }
 
+// runTests
+// [Sonnet 4.5]
 func runTests(tests []struct {
 	input    []int
 	expected bool
