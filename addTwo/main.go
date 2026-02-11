@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// Leetcode
+// LeetCode
 // Add Two Numbers
 
 const (

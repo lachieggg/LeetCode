@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+// LeetCode
+// https://leetcode.com/problems/permutations/
+
 func permute(nums []int) [][]int {
 	n := len(nums)
 	if n == 0 {
