@@ -144,3 +144,5 @@ archived/
 # C++
 *.dSYM
 
+# Mac OS
+.DS_Store
