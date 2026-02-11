@@ -60,7 +60,7 @@ func generateMatrix(n int) [][]int {
 
 func main() {
 	var matrix [][]int
-	for i := range 25 {
+	for i := range 10 {
 		matrix = generateMatrix(i)
 		printMatrix(matrix)
 	}
