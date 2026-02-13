@@ -2,15 +2,12 @@ package main
 
 import "fmt"
 
-/**
- * Definition for singly-linked list.
- */
 type ListNode struct {
-	Val int
+	Val  int
 	Next *ListNode
 }
 
-// print out a linked list
+// print a linked list
 func (l *ListNode) print() {
 	for l != nil {
 		fmt.Println(l.Val)
@@ -43,7 +40,7 @@ func (l *ListNode) reverseLinkedList() *ListNode {
 		lst = &ListNode{current.Val, lst}
 		current = current.Next
 	}
-	
+
 	start := lst
 
 	return start
@@ -65,9 +62,9 @@ func getIntersectionNode(headA *ListNode, headB *ListNode) *ListNode {
 }
 
 func main() {
-	x := [...]int{1,1,8,4,5}
-	y := [...]int{2,3,4,1,8,4,5}
-	// 5 4 8 1 4 3 2 
+	x := [...]int{1, 1, 8, 4, 5}
+	y := [...]int{2, 3, 4, 1, 8, 4, 5}
+	// 5 4 8 1 4 3 2
 	// 5 4 8 1 1
 
 	lx := constructLinkedList(x[:])

@@ -15,11 +15,11 @@ class Solution:
 
     def letterCombinations(self, digits: str) -> list[str]:
         res = []
-        if(not digits): return res
+        if not digits : return res
         letters = self.mapping.get(digits[0])
 
         for letter in letters:
-            if(digits[1:]):
+            if digits[1:]:
                 results = self.letterCombinations(digits[1:])
                 for result in results:
                     res.append(letter + result)
@@ -28,7 +28,7 @@ class Solution:
 
         return res
 
-s = Solution()
-print(s.letterCombinations("468369592"))
-print(s.letterCombinations("23"))
-print(s.letterCombinations(""))
+if __name__ == "__main__":
+    s = Solution()
+    print(s.letterCombinations("23"))
+    print(s.letterCombinations(""))

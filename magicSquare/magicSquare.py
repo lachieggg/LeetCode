@@ -22,13 +22,6 @@ import random
 import re
 import sys
 
-#
-# Complete the 'formingMagicSquare' function below.
-#
-# The function is expected to return an INTEGER.
-# The function accepts 2D_INTEGER_ARRAY s as parameter.
-#
-
 EMPTY_MATRIX = [[0,0,0],[0,0,0],[0,0,0]]
 ROW = 'R'
 COLUMN = 'C'
@@ -51,8 +44,8 @@ def transverse(matrix):
     return newMatrix
 
 def formingMagicSquare(s):
+    sets = coords.values()                   # Sets
     coords = getSquareCoordsSet(s)           # Map of coordinates onto sets
-    sets = coords.values()                   # List of sets
     sums = getSetSums(sets)                  # Map of sets onto sum totals
     occurrences = getOccurrencesOfSums(sums) # Map of sums onto occurrences of those sums
 
@@ -78,7 +71,6 @@ def getSetSums(sets):
         sums[tuple(_set)] = sum(_set)
 
     return sums
-    
 
 def getSquareCoordsSet(s):
     coords = {}
@@ -100,8 +92,6 @@ def getSquareCoordsSet(s):
     coords[key] = diagonalTwo
 
     return coords
-
-
 
 def main():
     fptr = open(os.environ['OUTPUT_PATH'], 'w')

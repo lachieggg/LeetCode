@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-# Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
         self.val = x
@@ -24,11 +23,12 @@ class Solution:
         return
 
 
-s = Solution()
-h = ListNode(3)
-h.next = ListNode(2)
-h.next.next = ListNode(0)
-h.next.next.next = ListNode(-4)
-h.next.next.next = h.next
+if __name__ == "__main__":
+    s = Solution()
+    h = ListNode(3)
+    h.next = ListNode(2)
+    h.next.next = ListNode(0)
+    h.next.next.next = ListNode(-4)
+    h.next.next.next = h.next
 
-print(s.detectCycle(h))
+    print(s.detectCycle(h))

@@ -65,7 +65,6 @@ public:
 
 int main() {
     Solution s = Solution();
-    s.letterCombinations("");
-
+    s.letterCombinations("ag");
 }
     

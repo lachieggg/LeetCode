@@ -2,12 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
-)
-
-const (
-	IGNORE    = -math.MaxInt16
-	NOT_FOUND = -math.MaxInt8
 )
 
 func main() {
@@ -15,20 +9,20 @@ func main() {
 		input    []int
 		expected bool
 	}{
-		{[]int{4, 3, 2, 1, 0, 4, 0, 0}, false},
-		{[]int{4, 3, 3, 3, 1, 1, 0, 4}, false},
-		{[]int{4, 3, 3, 1, 0, 4}, true},
-		{[]int{3, 3, 1, 0, 4}, true},
-		{[]int{2, 3, 1, 1, 4}, true},
-		{[]int{0, 3, 1, 1, 4}, false},
 		{[]int{1}, true},
 		{[]int{0}, true},
 		{[]int{2, 0, 0}, true},
 		{[]int{1, 0, 1, 0}, false},
+		{[]int{1, 1, 1, 1, 1}, true},
+		{[]int{3, 3, 1, 0, 4}, true},
+		{[]int{2, 3, 1, 1, 4}, true},
+		{[]int{0, 3, 1, 1, 4}, false},
+		{[]int{4, 3, 3, 1, 0, 4}, true},
+		{[]int{4, 3, 2, 1, 0, 4, 0, 0}, false},
+		{[]int{4, 3, 3, 3, 1, 1, 0, 4}, false},
+		{[]int{10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, true},
 		{[]int{5, 9, 3, 2, 1, 0, 2, 3, 3, 1, 0, 0}, true},
 		{[]int{5, 9, 3, 8, 1, 0, 2, 3, 3, 1, 0, 0, 0}, false},
-		{[]int{1, 1, 1, 1, 1}, true},
-		{[]int{10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, true},
 	}
 	runTests(tests)
 }
@@ -75,15 +69,17 @@ func runTests(tests []struct {
 		fmt.Printf("\n---------------------------\n")
 		result := canJump(test.input)
 		if result == test.expected {
+			fmt.Println("✅")
 			passed++
 		} else {
 			failed++
+			fmt.Println("❌")
 			fmt.Printf("✗ canJump(%v) = %v (expected %v)\n", test.input, result, test.expected)
 		}
 	}
 
 	fmt.Printf("\n%d passed, %d failed\n", passed, failed)
 	if failed == 0 {
-		fmt.Println("✓ All tests passed!")
+		fmt.Println("✅ All tests passed!")
 	}
 }

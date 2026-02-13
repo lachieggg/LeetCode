@@ -47,8 +47,6 @@ def hourglassSum(arr):
 
     return maxHourGlassSum
 
-
-
 matrixOne = [
         [1,1,1,0,0,0], 
         [0,1,0,0,0,0], 
@@ -67,7 +65,6 @@ matrixTwo = [
         [-1, -3, -1, -2, -4, -5]
 ]
 
-
 matrixThree =  [
         [-1,  1, -1,  0,  0,  0],
         [ 0, -1,  0,  0,  0,  0],
@@ -76,7 +73,6 @@ matrixThree =  [
         [-7,  0,  0, -2,  0,  0],
         [ 0,  0, -1, -2, -4,  0]
 ]
-
 
 inputArraySet = [matrixOne, matrixTwo, matrixThree]
 
