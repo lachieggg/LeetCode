@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# This problem decomposes into a Fibonacci Sequence.
+
 class Solution(object):
 	def __init__(self):
 		self.results = {}
@@ -29,6 +31,7 @@ class Solution(object):
 		return self.climbStairs(n-1) + self.climbStairs(n-2)
 
 
-s = Solution()
-s.initialize(45)
-print(s.climbStairs(45))
+if __name__ == "__main__":
+	s = Solution()
+	s.initialize(45)
+	print(s.climbStairs(45))

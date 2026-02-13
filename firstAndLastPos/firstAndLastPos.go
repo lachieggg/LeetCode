@@ -3,27 +3,31 @@ package main
 import (
 	"fmt"
 	"math"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 // RunCase
 func RunCase(nums []int, target int, expected []int) {
 	fmt.Println(nums)
 	result := searchRange(nums, target)
-	assert.Equal(&testing.T{}, result, expected)
+	for i, v := range result {
+		if expected[i] != v {
+			fmt.Println("❌")
+		}
+	}
+	fmt.Println("✅")
 }
 
-const notFound = -1
+const (
+	DNE = -1
+)
 
 // searchRange
 func searchRange(nums []int, target int) []int {
 	if len(nums) == 0 {
 		return []int{-1, -1}
 	}
-	fnd := bsearch(nums, target)
-	if fnd == notFound {
+	fnd := binarysearch(nums, target)
+	if fnd == DNE {
 		return []int{-1, -1}
 	}
 	start := findStart(nums, target)
@@ -34,70 +38,64 @@ func searchRange(nums []int, target int) []int {
 // findStart
 func findStart(nums []int, target int) int {
 	var length int = len(nums)
-	var position int
-	var direction int = 1
-	var exponent int = 0
+	var displacement, exponent int
+	var velocity int = 1
 
 	if length == 1 {
 		if nums[0] == target {
 			return 0
 		}
-		return notFound
+		return DNE
 	}
 
 	for {
-		minusCheckable := position-1 >= 0
-		plusCheckable := position+1 <= length-1
-		currCheckable := position >= 0 && position <= length-1
+		previousCheckable := displacement-1 >= 0
+		nextCheckable := displacement < length-1
 
-		if !currCheckable {
+		if displacement < 0 || displacement > length-1 {
 			exponent = 0
-			if position < 0 {
-				position = 0
-				direction = 1
+			if displacement < 0 {
+				displacement = 0
+				velocity = 1
 			} else {
-				position = length - 1
-				direction = -1
+				displacement = length - 1
+				velocity = -1
 			}
 			continue
 		}
 
-		if plusCheckable && nums[position] < target && nums[position+1] > target {
-			return notFound
+		if nextCheckable && nums[displacement] < target && nums[displacement+1] > target {
+			return DNE
 		}
 
-		if nums[position] == target {
+		if nums[displacement] < target {
+			velocity = 1
+			exponent = 0
+		} else if nums[displacement] > target {
+			velocity = -1
+			exponent = 0
+		} else {
 			// found
-			if minusCheckable && nums[position-1] != target {
-				// first one
-				return position
-			} else if !minusCheckable {
-				// start of array
-				return position
+			if previousCheckable && nums[displacement-1] != target || !previousCheckable {
+				return displacement
 			}
-			for position >= 0 && nums[position] == target {
-				position -= 1
+			for displacement >= 0 && nums[displacement] == target {
+				displacement -= 1
 			}
-			return position + 1
-		} else if nums[position] < target {
-			direction = 1
-			exponent = 0
-		} else if nums[position] > target {
-			direction = -1
-			exponent = 0
+			return displacement + 1
 		}
 
-		switch position {
+		switch displacement {
 		case 0:
-			position += 1
-			direction = 1
+			displacement += 1
+			velocity = 1
 			exponent = 0
 		case length - 1:
-			position -= 1
-			direction = -1
+			displacement -= 1
+			velocity = -1
 			exponent = 0
 		default:
-			position += power(2, exponent) * direction
+			displacement += int(math.Pow(float64(2), float64(exponent))) * velocity
 			exponent += 1
 		}
 	}
@@ -106,107 +104,88 @@ func findStart(nums []int, target int) int {
 // findStart
 func findEnd(nums []int, target int) int {
 	var length int = len(nums)
-	var position int
-	var direction int = 1
-	var exponent int = 0
+	var displacement, exponent int
+	var velocity int = 1
 
 	if length == 1 {
 		if nums[0] == target {
 			return 0
 		}
-		return notFound
+		return DNE
 	}
 
 	for {
-		plusCheckable := position+1 <= length-1
-		currCheckable := position >= 0 && position <= length-1
+		nextCheckable := displacement < length-1
 
-		if !currCheckable {
-			direction = -direction
+		if displacement < 0 || displacement > length-1 {
+			velocity = -velocity
 			exponent = 0
-			if position < 0 {
-				position = 0
-				direction = 1
+			if displacement < 0 {
+				displacement = 0
+				velocity = 1
 			} else {
-				position = length - 1
-				direction = -1
+				displacement = length - 1
+				velocity = -1
 			}
 			continue
 		}
 
-		if plusCheckable && nums[position] < target && nums[position+1] > target {
-			return notFound
+		if nextCheckable && nums[displacement] < target && nums[displacement+1] > target {
+			return DNE
 		}
 
-		if nums[position] == target {
-			// found
-			if plusCheckable && nums[position+1] != target {
-				// last one
-				return position
-			} else if !plusCheckable {
-				// end of array
-				return position
-			}
-			for position <= length-1 && nums[position] == target {
-				position += 1
-			}
-			return position - 1
-		} else if nums[position] < target {
-			direction = 1
+		if nums[displacement] < target {
+			velocity = 1
 			exponent = 0
-		} else if nums[position] > target {
-			direction = -1
+		} else if nums[displacement] > target {
+			velocity = -1
 			exponent = 0
+		} else {
+			if nextCheckable && nums[displacement+1] != target || !nextCheckable {
+				return displacement
+			}
+			for displacement <= length-1 && nums[displacement] == target {
+				displacement += 1
+			}
+			return displacement - 1
 		}
 
-		switch position {
+		switch displacement {
 		case 0:
-			position += 1
+			displacement += 1
 			exponent = 0
 		case length - 1:
-			position -= 1
+			displacement -= 1
 			exponent = 0
 		default:
-			position += power(2, exponent) * direction
+			displacement += int(math.Pow(float64(2), float64(exponent))) * velocity
 			exponent += 1
 		}
 	}
 }
 
-// power
-func power(base, exponent int) int {
-	result := int(math.Pow(float64(base), float64(exponent)))
-	return result
-}
-
-// bsearch
-func bsearch(nums []int, target int) int {
+// binarysearch
+func binarysearch(nums []int, target int) int {
 	length := len(nums)
 	if length == 1 {
 		if nums[0] == target {
 			return 0
 		}
-		return notFound
+		return DNE
 	}
-	splitIndex := midpoint(float64(length))
-	fnd := bsearch(nums[0:splitIndex], target)
-	if fnd != notFound {
-		return fnd
+	splitIndex := int(math.Floor((float64(length)) / 2))
+	f := binarysearch(nums[0:splitIndex], target)
+	if f != DNE {
+		return f
 	}
-	fnd = bsearch(nums[splitIndex:], target)
-	if fnd != notFound {
-		return fnd + splitIndex
+	f = binarysearch(nums[splitIndex:], target)
+	if f != DNE {
+		return f + splitIndex
 	}
 
-	return notFound
+	return DNE
 }
 
-// midpoint
-func midpoint(num float64) int {
-	return int(math.Floor(num / 2))
-}
-
-// main
 func main() {
 	RunCase([]int{}, 2, []int{-1, -1})
 	RunCase([]int{2, 2}, 2, []int{0, 1})

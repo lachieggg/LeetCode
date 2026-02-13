@@ -6,6 +6,7 @@ import random
 import re
 import sys
 
+
 # Constants
 #
 # Query constants
@@ -17,7 +18,7 @@ QUERY_TYPE_INDEX = 0
 X_INDEX = 1
 Y_INDEX = 2
 
-DEBUG = False
+DEBUG = True
 
 def dynamicArray(n, queries):
     global lastAnswer
@@ -56,19 +57,25 @@ def dynamicArray(n, queries):
 
     return answerArray
 
-
-# Main function
 def main():
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    cwd = os.getcwd()
+    fptr = open(cwd+ "/output", 'w')
+
     first_multiple_input = input().rstrip().split()
+
     n = int(first_multiple_input[0])
     q = int(first_multiple_input[1])
+
     queries = []
+
     for _ in range(q):
         queries.append(list(map(int, input().rstrip().split())))
+
     result = dynamicArray(n, queries)
+
     fptr.write('\n'.join(map(str, result)))
     fptr.write('\n')
+
     fptr.close()
 
 if __name__ == '__main__':
