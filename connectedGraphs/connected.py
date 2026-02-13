@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+DAG_FILE = "/dag.txt"
+OUT_FILE = "/out.txt"
 NOT_CONNECTED = 0
 
 import os
@@ -9,9 +11,6 @@ class Graph:
 		self.vertices = vertices
 		self.size = size
 		self.order = order
-
-	def reachable(self):
-		pass
 
 class Vertex:
 	def __init__(self, label, Id, In=[], Out=[]):
@@ -36,7 +35,6 @@ def explore(vertex, visited, node_count):
 	return NOT_CONNECTED
 
 # Load and define the vertices and the edges
-#
 def load_vertices(lines, order):
 	vertices = [Vertex(str(x), x) for x in range(order)]
 	for line in lines[1:]:
@@ -51,11 +49,8 @@ def load_vertices(lines, order):
 	return vertices
 
 # Load a graph of vertices and edges G(V, E)
-#
-# Order is the number of vertices
-# Size is the number of edges
-# Order = |V|
-# Size = |E|
+# Order -> number of vertices |V|
+# Size  -> number of edges |E|
 def load_graph(infile):
 	lines = infile.readlines()
 	order = int(lines[0])
@@ -78,7 +73,7 @@ def main(graph):
 	return True
 
 if __name__ == "__main__":
-	infile = open(os.getcwd() + "/dag.txt",'r')
-	outfile = open(os.getcwd() + "/out.txt", 'w')
+	cwd = os.getcwd()
+	infile, outfile = open(cwd + DAG_FILE,'r'), open(cwd + OUT_FILE, 'w')
 	graph = load_graph(infile)
 	main(graph)

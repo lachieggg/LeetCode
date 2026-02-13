@@ -6,6 +6,8 @@ import random
 import re
 import sys
 
+# HackerRank
+
 #
 # Complete the 'dynamicArray' function below.
 #
@@ -13,12 +15,6 @@ import sys
 # The function accepts following parameters:
 #  1. INTEGER n
 #  2. 2D_INTEGER_ARRAY queries
-#
-
-# To run in terminal, execute:
-#
-# export OUTPUT_PATH='/home/lachlan/Desktop/Git/LeetCode/output'
-#
 #
 
 # Constants
@@ -73,7 +69,6 @@ def dynamicArray(n, queries):
 
 
 # Main function
-# (Hackerrank)
 def main():
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
     first_multiple_input = input().rstrip().split()

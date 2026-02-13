@@ -3,38 +3,16 @@ package main
 import (
 	"fmt"
 	"math"
-	"reflect"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // RunCase
 func RunCase(nums []int, target int, expected []int) {
 	fmt.Println(nums)
 	result := searchRange(nums, target)
-	if reflect.DeepEqual(result, expected) {
-		fmt.Println("Ok")
-	} else {
-		fmt.Printf("Fail: searchRange(%v, %d) = %v, expected %v\n", nums, target, result, expected)
-	}
-}
-
-// main
-func main() {
-	RunCase([]int{5, 7, 7, 8, 8, 10}, 7, []int{1, 2})
-	RunCase([]int{5, 7}, 7, []int{1, 1})
-	RunCase([]int{5, 7, 7, 8, 8, 10}, 8, []int{3, 4})
-	RunCase([]int{2, 2}, 2, []int{0, 1})
-	RunCase([]int{2, 2, 2}, 2, []int{0, 2})
-	RunCase([]int{1, 2, 2}, 2, []int{1, 2})
-	RunCase([]int{}, 2, []int{-1, -1})
-	RunCase([]int{1, 2, 3}, 2, []int{1, 1})
-	RunCase([]int{1, 1, 2, 4}, 2, []int{2, 2})
-	RunCase([]int{1, 1, 2}, 1, []int{0, 1})
-	RunCase([]int{1, 1, 2, 2}, 1, []int{0, 1})
-	RunCase([]int{1, 2, 3, 3, 3, 3, 4, 5, 9}, 3, []int{2, 5})
-	RunCase([]int{0, 0, 1, 1, 1, 2, 3, 4, 4, 5, 6, 7, 7, 7, 8, 8, 8, 8, 9, 9, 10}, 4, []int{7, 8})
-	RunCase([]int{1, 1, 1, 1, 2, 4, 4, 4, 5, 5, 7, 7, 7, 8, 8, 9, 9, 11, 11, 12, 12, 12, 12}, 5, []int{8, 9})
-	RunCase([]int{2, 2}, 5, []int{-1, -1})
-	RunCase([]int{0, 0, 1, 2, 3, 3, 4}, 2, []int{3, 3})
+	assert.Equal(&testing.T{}, result, expected)
 }
 
 const notFound = -1
@@ -109,15 +87,16 @@ func findStart(nums []int, target int) int {
 			exponent = 0
 		}
 
-		if position == 0 {
+		switch position {
+		case 0:
 			position += 1
 			direction = 1
 			exponent = 0
-		} else if position == length-1 {
+		case length - 1:
 			position -= 1
 			direction = -1
 			exponent = 0
-		} else {
+		default:
 			position += power(2, exponent) * direction
 			exponent += 1
 		}
@@ -180,13 +159,14 @@ func findEnd(nums []int, target int) int {
 			exponent = 0
 		}
 
-		if position == 0 {
+		switch position {
+		case 0:
 			position += 1
 			exponent = 0
-		} else if position == length-1 {
+		case length - 1:
 			position -= 1
 			exponent = 0
-		} else {
+		default:
 			position += power(2, exponent) * direction
 			exponent += 1
 		}
@@ -224,4 +204,23 @@ func bsearch(nums []int, target int) int {
 // midpoint
 func midpoint(num float64) int {
 	return int(math.Floor(num / 2))
+}
+
+// main
+func main() {
+	RunCase([]int{}, 2, []int{-1, -1})
+	RunCase([]int{2, 2}, 2, []int{0, 1})
+	RunCase([]int{5, 7}, 7, []int{1, 1})
+	RunCase([]int{2, 2}, 5, []int{-1, -1})
+	RunCase([]int{2, 2, 2}, 2, []int{0, 2})
+	RunCase([]int{1, 2, 2}, 2, []int{1, 2})
+	RunCase([]int{1, 1, 2}, 1, []int{0, 1})
+	RunCase([]int{1, 2, 3}, 2, []int{1, 1})
+	RunCase([]int{1, 1, 2, 4}, 2, []int{2, 2})
+	RunCase([]int{1, 1, 2, 2}, 1, []int{0, 1})
+	RunCase([]int{5, 7, 7, 8, 8, 10}, 7, []int{1, 2})
+	RunCase([]int{5, 7, 7, 8, 8, 10}, 8, []int{3, 4})
+	RunCase([]int{0, 0, 1, 2, 3, 3, 4}, 2, []int{3, 3})
+	RunCase([]int{1, 2, 3, 3, 3, 3, 4, 5, 9}, 3, []int{2, 5})
+	RunCase([]int{0, 0, 1, 1, 1, 2, 3, 4, 4, 5, 6, 7, 7, 7, 8, 8, 8, 8, 9, 9, 10}, 4, []int{7, 8})
 }

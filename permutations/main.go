@@ -27,7 +27,7 @@ func permute(nums []int) [][]int {
 	var permutations [][]int
 	var rows [][]int
 
-	for i := 0; i < n; i++ {
+	for i := range n {
 		// n-1 permutations step
 		// pick some number, remove it
 		// get all permutations

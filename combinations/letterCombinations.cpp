@@ -34,10 +34,7 @@ public:
     void algorithm(std::vector<std::string>& v, int digit) {
         // Take every string in vector
         // Create 3 of them
-        //
         // Then append the different characters to each of them
-        //
-        //
         char characters[] = {'a', 'b', 'c'};
         (void)characters;
     }

@@ -9,16 +9,6 @@ class TreeNode(object):
         self.right = right
 
 class Solution:
-    """
-    This was an interesting problem.
-
-    My solution ended up being more of a creative exploration of converting arrays
-    to binary trees and back, rather than going for being optimal or concise.
-
-    Although to my knowledge it does solve the problem on all inputs, the algorithm
-    itself is too slow to test fully on LeetCode
-    """
-
     def isSymmetricArray(self, array):
         """Determine whether an array is symmetric"""
         if(len(array) % 2 != 0):

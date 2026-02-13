@@ -5,7 +5,9 @@ import (
 	"strings"
 )
 
-const REPLACE_ALL = -1
+const (
+	REPLACE_ALL = -1
+)
 
 // Keeps track of the strings that
 // have already been checked
@@ -25,20 +27,19 @@ func contains(arr []string, s string) bool {
 // tries to turn s2 into s1
 // by use of transformations
 func recurse(s1 string, s2 string) bool {
-
-	if s1 == s2 { 
+	if s1 == s2 {
 		return true
 	}
 	checked = append(checked, s2)
 
 	// Generate the set of possible
 	// strings that can be created
-	// at only this step, using 
+	// at only this step, using
 	// transformations, and iteratively
 	// check whether any are a solution
 	var toCheck []string
-	for i, _ := range s1 {
-		for j, _ := range s1[0:i] {
+	for i := range s1 {
+		for j := range s1[0:i] {
 			fmt.Printf("swapping %d with %d  ", i, j)
 			n := swap(s2, i, j)
 			fmt.Println(n)
@@ -49,8 +50,8 @@ func recurse(s1 string, s2 string) bool {
 		}
 	}
 
-	for i, _ := range s1 {
-		for j, _ := range s1[0:i] {
+	for i := range s1 {
+		for j := range s1[0:i] {
 			fmt.Printf("replacing %s with %s  ", string(s2[i]), string(s2[j]))
 			n := replace(s2, string(s2[i]), string(s2[j]))
 			fmt.Println(n)
@@ -80,7 +81,7 @@ func recurse(s1 string, s2 string) bool {
 
 // closeStrings
 func closeStrings(s1 string, s2 string) bool {
-	if len(s1) != len(s2) { 
+	if len(s1) != len(s2) {
 		return false
 	}
 
@@ -90,7 +91,7 @@ func closeStrings(s1 string, s2 string) bool {
 // swap
 // Given a string s and two indexes
 // corresponding to characters swap
-// two characters in s with one another 
+// two characters in s with one another
 func swap(s string, index1 int, index2 int) string {
 	r := []rune(s)
 	tmp := r[index1]
@@ -101,7 +102,7 @@ func swap(s string, index1 int, index2 int) string {
 
 // replace
 // Given a string s and two strings s1 and s2,
-// replace all instances of s1 with s2 
+// replace all instances of s1 with s2
 // and all instances of s2 with s1
 func replace(s string, s1 string, s2 string) string {
 	r := strings.NewReplacer(s1, s2, s2, s1)
@@ -109,16 +110,9 @@ func replace(s string, s1 string, s2 string) string {
 	return s
 }
 
-// test
-func test() {
-
-	a := "123456"
-	b := "653421"
-	x := closeStrings(a, b)
-	fmt.Println(x)
-}
-
 // main
 func main() {
-	test()
+	a := "123456"
+	b := "653421"
+	fmt.Println(closeStrings(a, b))
 }
