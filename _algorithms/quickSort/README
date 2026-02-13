@@ -1,5 +1,0 @@
-Quick sort algorithm implemented in Python, using the Hoare partition scheme.
-
-Visualization included.
-
-Quick sort is quite similar to Merge sort, except that instead of splitting each subarray in half, we partition it with a pivot.

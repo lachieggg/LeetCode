@@ -136,7 +136,7 @@ int *make_array(int length) {
 	return A;
 
 }
-// Main
+
 int main(int argc, char **argv) {
 	int length;
 	int *A;

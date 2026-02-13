@@ -27,7 +27,8 @@ class Solution:
             return len(arrayOne) + result
         return self.search(arrayOne, target)
 
-array = [1,2,3,4,5,9,11]
-s = Solution()
-index = s.search(array, 9)
-print(index)
+if __name__ == "__main__":
+    array = [1,2,3,4,5,9,11]
+    s = Solution()
+    index = s.search(array, 9)
+    print(index)

@@ -108,8 +108,7 @@ class Game:
 	def hanoi(self, fromTower, viaTower, toTower, n):
 		"""
 		Move the top n discs on 'fromTower' to 'toTower' using the 'viaTower'
-		
-		For instance, move n discs on 'A' to 'C' using 'B'
+		Eg. move n discs on 'A' to 'C' using 'B'
 		"""
 		if(n == 0):
 			return
@@ -127,6 +126,7 @@ class Game:
 
 		self.represent()
 
-game = Game()
-game.represent()
-game.hanoi('A', 'B', 'C', NUM_DISCS)
+if __name__ == "__main__":
+	game = Game()
+	game.represent()
+	game.hanoi('A', 'B', 'C', NUM_DISCS)
